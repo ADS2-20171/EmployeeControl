@@ -19,8 +19,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django import views as django_views
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+   
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^jsi18n/', django_views.i18n.javascript_catalog),
 

@@ -2,7 +2,7 @@ from uuid import uuid4
 
 from django.db import models
 
-from backend_apps.auths.models import User
+from django.contrib.auth.models import User
 
 
 class Post(models.Model):

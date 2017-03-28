@@ -48,7 +48,7 @@ THIRD_PARTY_APPS = [
 ]
 
 BACKEND_APPS = [
-    
+    'backend_apps.utils',
 ]
 
 LOCAL_APPS = [
@@ -133,7 +133,7 @@ USE_TZ = True
 
 SITE_ID = 1  # added
 
-
+# Custom User
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
