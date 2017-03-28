@@ -1,0 +1,4 @@
+# Install for deploy project
+
+-r requirements/production.txt
+

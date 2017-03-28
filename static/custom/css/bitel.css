@@ -1,0 +1,49 @@
+.container-form {
+    width: 98% !important;
+    margin-left: 1% !important;
+    margin-right: 1% !important;
+}
+
+.btn-toolbar {
+    margin-top: -40px !important;
+    margin-bottom: 20px !important;
+}
+
+.img-circle-avatar {
+    width: 40% !important;
+    border-radius: 50%;
+    background-color: #ffffff;
+    padding: 5px 5px 5px 5px;
+}
+
+.pull-right {
+    padding-right: 1% !important;
+}
+
+.padding-right60 {
+    padding-right: 60px !important;
+}
+
+.form-control.select-session {
+
+}
+
+label.filter-col {
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+}
+
+.form-group-search {
+    position: relative !important;
+    min-height: 100px !important;
+}
+
+.btn-bottom {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+}
+
+.user-menu-bitel {
+    height: 165% !important;
+}

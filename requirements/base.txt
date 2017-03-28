@@ -1,0 +1,6 @@
+# Base Requirements
+
+Django==1.9.12
+Pillow==4.0.0
+django-crispy-forms==1.6.1
+
