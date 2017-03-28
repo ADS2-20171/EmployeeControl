@@ -13,4 +13,8 @@ pasos para iniciar el proyecto
     python manage.py createsuperuser --settings=config.settings.local
     python manage.py runserver --settings=config.settings.local
 
+### Url de prueba blog
+    
+    http://localhost:8000/blog/post/listar/
+
 
