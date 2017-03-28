@@ -1,9 +1,17 @@
 # EmployeeControl
 Sistema de Asistencia de Empleados, para la UGEL LAMPA
 
+## Arquitectura
+
+![arquitectura](arquitectura.png)
+
+
+
 ## Iniciar Proyecto
 
+
 pasos para iniciar el proyecto 
+
 
     git clone https://github.com/ADS2-20171/EmployeeControl.git
     cd EmployeeControl
@@ -12,6 +20,7 @@ pasos para iniciar el proyecto
     python manage.py migrate --settings=config.settings.local
     python manage.py createsuperuser --settings=config.settings.local
     python manage.py runserver --settings=config.settings.local
+
 
 ### Url de prueba blog
     
