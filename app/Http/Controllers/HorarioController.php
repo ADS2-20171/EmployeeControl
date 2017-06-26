@@ -10,8 +10,7 @@ class HorarioController extends Controller
 {
 
 	public function index(){
-        $ho=HorarioModel::paginate();
-       	return view('horarios.horarios', compact('ho'));
+		return view('horarios.horarios');
 	}
 
 
@@ -30,27 +29,5 @@ class HorarioController extends Controller
     	return response()->json([
                 "mensaje" => "creado"
                 ]);
-    }
-
-    public function UpdateHorario(Request $requests){
-        $horario=HorarioModel::where('idHorario', $requests['id'])->first();
-        $horario->fill([
-            'horario_descripcion' => $requests['descripcion'],
-            'horario_inicio' => Carbon::parse($requests['inicio']),
-            'horario_fin' => Carbon::parse($requests['fin']),
-        ]);
-        $horario->save();
-         return response()->json([
-                "mensaje"=> $horario
-                ]);
-    }
-
-
-    public function deleteHorario($id){
-            $horario=HorarioModel::where('idHorario', $id)->first();
-            $horario->delete();
-             return response()->json([
-                    "mensaje"=>"Eliminado"
-                    ]);
     }
 }

@@ -5,8 +5,8 @@
 @section('content')
     
 <div id='app'>
-<div class="modal" :class="{ visible: editFormVisible }" style="overflow-y: auto;">
-        <div class="modal-content" style="width: auto;">
+<div class="modal" :class="{ visible: editFormVisible }">
+        <div class="modal-content" style="width: 600px;">
             <span class="close" @click="editFormVisible = false">&times;</span>
             <h4 class="modal-title" id="myModalLabel">Actualizar de Horario</h4>
             </br>
@@ -16,15 +16,15 @@
                         <div class="row">
                             <section class="col-sm-6">
                                 <label>Descripcion :</label>
-                                <input type="text" name="horario_descripcion" v-model="hora.descripcion" class="form-control">
+                                <input type="text" name="horario_descripcion" v-model="horario.descripcion" class="form-control">
                             </section>
                             <section class="col-sm-6">
                                 <label>Horario de Inicio :</label>
-                                <input type="time" name="horario_inicio"  v-model="hora.inicio" class="form-control">
+                                <input type="time" name="horario_inicio"  v-model="horario.inicio" class="form-control">
                             </section>
                              <section class="col-sm-6">
                                 <label>Horario Fin :</label>
-                                <input type="time" name="horario_fin"  v-model="hora.fin" class="form-control">
+                                <input type="time" name="horario_fin"  v-model="horario.fin" class="form-control">
                             </section>
                         </div>
                         
@@ -41,7 +41,6 @@
         <div>
             <section style="padding: 20px">
                 <h2><b>Horarios</b></h2>
-
             </section>
         </div>
     </header>
@@ -61,16 +60,15 @@
             <tbody>
                 <tr v-for="h in horarios">
                     <td>${h.horario_descripcion}</td>
-                    <td>${getDifference(h.horario_inicio, h.horario_fin)}</td>
-                    <td></td>
+                    <td>${h.horario_inicio}</td>
+                    <td>${h.horario_fin}</td>
                     <td>
                    <button name="Editar" class="btn btn-primary" @click="showEditar(h)">Editar</button>
-                   <button name="eliminar" class="btn btn-yellow" @click="EliminarHorario(h.idHorario)">Elimminar</button>
+                   <button name="eliminar" class="btn btn-yellow" @click="EliminarTrabajador(h.idHorario)">Elimminar</button>
                     </td>
                 </tr>
             </tbody>
         </table>
-        {!! $ho->render() !!}
     </div>
     </article>
     <article class="col-sm-12 col-md-12 col-lg-7" id="formulario">
@@ -119,7 +117,6 @@
                 return {
                     horarios:[],
                     horario:{},
-                    hora:{},
                     editFormVisible: false,
                     newFormVisible: false,
                  }
@@ -130,82 +127,47 @@
                 //$('#modalregistro').modal('show');
                 this.newFormVisible = true;
             },
-            showEditar: function(hora) {
+            showEditar: function(horario) {
                 this.editFormVisible = true;
-                this.hora = {
-                    id:hora.idHorario,
-                    descripcion: hora.horario_descripcion,
-                    inicio: hora.horario_inicio,
-                    fin: hora.horario_fin,
+                this.horario = {
+                    descripcion: horario.horario_descripcion,
+                    inicio: horario.horario_inicio,
+                    fin: horario.horario_fin,
                 };
             },
 
-           getDifference:function(_start, _end) {
-                  const start = moment.utc(_start, 'HH:mm:ss');
-                  const end = moment.utc(_end, 'HH:mm:ss');
-                  const diffHours = end.diff(start, 'hours');
-                  end.subtract(diffHours, 'hours');
-                  const diffMinutes = end.diff(start, 'minutes');
-                  end.subtract(diffMinutes, 'minutes');
-                  const diffSeconds = end.diff(start, 'seconds');
+            EliminarHorario:function(horario){
+                axios.delete('/AcademicSystem/public/api/horario',this.horario).then(function(data){
+                    alert(data.data.mensaje);
+                    var clone = {
+                        trabajador_nombres: this.trabajador.nombres,
+                        trabajador_apellidos: this.trabajador.apellidos,
+                        trabajador_sexo: this.trabajador.sexo,
+                        trabajador_cargo: this.trabajador.cargo,
+                        trabajador_condicion: this.trabajador.condicion
 
-                  const difference = moment(`${diffHours}:${diffMinutes}:${diffSeconds}`, 'HH:mm:ss');
-                  return difference.format('HH:mm:ss');
-                },
-
-            EliminarHorario:function(id){
-                axios.delete('/AcademicSystem/public/api/horario/' + id).then(function(data){
-                    Push.create('Horario Eliminado!',{
-                        icon: '{{asset('img/icon.png')}}',
-                        timeout: 4000,
-                        onClick: function () {
-                            window.focus();
-                            this.close();
-                        }
-                    });
-                    // copia de los Usuarios
-                    var copy = this.horarios.slice(0);
-                    // filtras para obtener los Usuarios
-                    // que tengan un id diferente
-                    copy = copy.filter(function(hora) {
-                        return hora.idHorario !== id;
-                    });
-                    this.horarios = copy;
+                    }
+                    this.horarios.push(clone);
                 }.bind(this))
             },
 
 
-            ActualizarHorario:function(){
-                axios.put('/AcademicSystem/public/api/horario',this.hora).then(function(data){
-                    var copy = this.horarios.slice(0);
-                    copy.forEach(function(hr) {
-                        if (hr.idHorario === this.hora.id) {
-                            hr = data.data.mensaje;
-                        }
-                    }.bind(this));
-                    Push.create('Horario Actualizado!',{
-                        icon: '{{asset('img/icon.png')}}',
-                        timeout: 4000,
-                        onClick: function () {
-                            window.focus();
-                            this.close();
-                        }
-                    });
-                    this.horarios.push(data.data);
+            ActualizarHorario:function(horario){
+                axios.update('/AcademicSystem/public/api/horario',this.horario).then(function(data){
+                    alert(data.data.mensaje);
+                    var clone = {
+                        horario_descripcion: this.horario.descripcion,
+                        horario_inicio: this.horario.inicio,
+                        horario_fin: this.horario.fin,
+                    }
+                    this.horarios.push(clone);
                 }.bind(this))
             },
 
 
             RegistrarHorario:function(){
                 axios.post('/AcademicSystem/public/api/horario',this.horario).then(function(data){
-                    Push.create('Horario Registrado!',{
-                        icon: '{{asset('img/icon.png')}}',
-                        timeout: 4000,
-                        onClick: function () {
-                            window.focus();
-                            this.close();
-                        }
-                    });
+                    alert(data.data.mensaje);
                     var clone = {
                         horario_descripcion: this.horario.descripcion,
                         horario_inicio: this.horario.inicio,

@@ -13,8 +13,7 @@ class TrabajadorController extends Controller
     public function index()
     {
     	//$trabajadores = Trabajador::all();
-        $ta=Trabajador::paginate();
-    	return view('trabajador.trabajador', compact('ta'));
+    	return view('trabajador.trabajador');
 
     }
 
@@ -24,14 +23,6 @@ class TrabajadorController extends Controller
     }
 
     public function postTrabajoderes(Request $requests){
-
-
-        $dir="C:/xampp/htdocs/AcademicSystem/public/avatar/";
-        $uuid = uniqid();
-        $name = $_FILES["photo"]["name"];
-        $temp= $_FILES["photo"]["tmp_name"];
-        $ext = pathinfo($name, PATHINFO_EXTENSION); 
-        $path = $dir.$uuid.".".$ext;
             Trabajador::create([
             'trabajador_nombres' => $requests['nombres'],
             'trabajador_apellidos' => $requests['apellidos'],
@@ -43,9 +34,8 @@ class TrabajadorController extends Controller
             'trabajador_estado' => $requests['estado'],
             'trabajador_cargo' => $requests['cargo'],
             'trabajador_condicion' => $requests['condicion'],
-            'trabajador_imagen' => $uuid.".".$ext,
             ]);
-            move_uploaded_file($temp, $path);
+
             return response()->json([
                 "mensaje" => "creado"
                 ]);
@@ -53,29 +43,18 @@ class TrabajadorController extends Controller
         
     }
 
-    public function UpdateTrabajador(Request $requests){
-    	$trabajador=Trabajador::where('idTrabajador', $requests['id'])->first();
-        $trabajador->fill([
-            'trabajador_nombres' => $requests['nombres'],
-            'trabajador_apellidos' => $requests['apellidos'],
-            'trabajador_dni' => $requests['dni'],
-            'trabajador_FechNac' => Carbon::parse($requests['fechnac']),
-            'trabajador_sexo' => $requests['sexo'],
-            'trabajador_celular' => $requests['celular'],
-            'trabajador_FechInicio' => Carbon::parse($requests['fechinicio']),
-            'trabajador_estado' => $requests['estado'],
-            'trabajador_cargo' => $requests['cargo'],
-            'trabajador_condicion' => $requests['condicion'],
-        ]);
+    public function UpdateTrabajador($id){
+    	$trabajador=Trabajador::find($id);
+        $trabajador->fill($request->all());
         $trabajador->save();
          return response()->json([
-                "mensaje"=> $trabajador
+                "mensaje"=>"Actualizado"
                 ]);
     }
 
 
     public function deleteTrabajador($id){
-    	 	$trabajador=Trabajador::where('idTrabajador', $id)->first();
+    	 	$trabajador=Trabajador::find($id);
 	        $trabajador->delete();
 	         return response()->json([
 	                "mensaje"=>"Eliminado"

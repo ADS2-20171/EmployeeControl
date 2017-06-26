@@ -9,31 +9,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/font-awesome.css')}}" rel="stylesheet">
-
-    <link rel="stylesheet" type="text/css" href="{{asset('css/fullcalendar.min.css')}}">
     
-    <link rel="stylesheet" type="text/css" href="{{asset('css/jquery-ui.min.css')}}">
     <!-- Toastr style -->
-    <link href="{{asset('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet">
-     <link href="{{asset('css/calendar.css')}}" rel="stylesheet">
     <link href="{{asset('css/toastr.min.css')}}" rel="stylesheet">
     <!-- Gritter -->
     <link href="{{asset('css/jquery.gritter.css')}}" rel="stylesheet">
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.css">
     <link rel="shortcut icon" href="{{asset('favicon.ico')}}">
-     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
     <!--Vue.JS-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.min.js"></script>
     <script src="{{asset('js/vue.js')}}"></script>
     
-    
-   
-    <script src="{{asset('js/metos.js')}}"></script>
-    <link href="{{asset('js/bootstrap-datetimepicker.es.js')}}" rel="stylesheet">
-    <link href="{{asset('js/bootstrap-datetimepicker.js')}}" rel="stylesheet">
-    
-    <link href="{{asset('js/underscore-min.js')}}" rel="stylesheet">
+
+
     </head>
 
 <body class="pace-done">
@@ -65,13 +53,13 @@
                             </span> 
                             </a>
                         </div>
-       @if(Auth::user()->getRol() == 'Administrador')
+      
                     <div class="logo-element">
                         <img alt="image" class="img-circle" src="{{asset('img/profile_small.jpg')}}">
                     </div>
                     </li>
                     <li>
-                        <a href="{{ url('/usuario') }}"><i class="fa fa-user"></i> <span class="menu-item-parent">Usuarios</span></a>
+                        <a href="{{ url('/') }}"><i class="fa fa-user"></i> <span class="menu-item-parent">Usuarios</span></a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-book"></i> <span class="nav-label">Registro</span><span class="fa arrow"></span></a>
@@ -85,27 +73,25 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-info"></i> <span class="nav-label">Reportes</span><span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-flask"></i> <span class="nav-label">Reportes</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
-                           <li>
-                                <a href="{{ url('/reportalumno') }}"><i class="fa fa-eye"></i> <span class="menu-item-parent">Alumno</span></a>
-                            </li>
-                            <li>
-                                <a href="{{ url('/reporttrabajador') }}"><i class="fa fa-eye"></i> <span class="menu-item-parent">Trabajador</span></a>
-                            </li>
+                           
                         </ul>
                     </li>
                     <li>
                         <a href="{{ url('/horario')}}"><i class="fa fa-clock-o" aria-hidden="true"></i> <span class="nav-label">horarios</span></a>
                     </li>
                     <li>
-                        <a href="{{ url('/asistencia') }}"><i class="fa fa-check" aria-hidden="true"></i> <span class="nav-label">Asistencia</span></a>
+                        <a href="#"><i class="fa fa-flask"></i> <span class="nav-label">Justificaciones</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                           
+                        </ul>
                     </li>
                     <li>
-                        <a href="{{ url('/agenda')}}"><i class="fa fa-calendar" aria-hidden="true"></i><span class="nav-label">Agenda</span></a>
+                        <a href="{{ url('/') }}"><i class=" fa fa-address-book" aria-hidden="true"></i> <span class="nav-label">Asistencia</span></a>
                     </li>
                    
-               @endif                   
+                          
                 </ul>
 
             </div>
@@ -149,19 +135,11 @@
     <!-- Mainly scripts -->
     <script src="{{asset('js/analytics.js')}}"></script>
     <script src="{{asset('js/jquery-2.1.1.js')}}"></script>
-    <script src="{{asset('js/moment.js')}}"></script>
-    <script src="{{asset('js/script.js')}}"></script>
-    <script src="{{asset('js/push.js')}}"></script>
-    <script src="{{asset('js/push.min.js')}}"></script>
-<!--Recordar     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.js"></script> -->
+    
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/jquery.metisMenu.js')}}"></script>
     <script src="{{asset('js/jquery.slimscroll.min.js')}}"></script>
-    <!--FullCalendar-->
-    <script src="{{asset('js/jquery-ui.custom.min.js')}}"></script>
-    <script src="{{asset('js/moment.min.js')}}"></script>
-    <script src="{{asset('js/fullcalendar.js')}}"></script>
-    <script src="{{asset('js/locale-all.js')}}"></script>
+
     <!-- Flot -->
     <script src="{{asset('js/jquery.flot.js')}}"></script>
     <script src="{{asset('js/jquery.flot.tooltip.min.js')}}"></script>
@@ -197,62 +175,142 @@
     <!-- Toastr -->
     <script src="{{asset('js/toastr.min.js')}}"></script>
     
+    
+
     <script>
         $(document).ready(function() {
-            var currentLangCode = 'es';//cambiar el idioma al español
- 
-            $('#calendar').fullCalendar({
-                eventClick: function(calEvent,updateEvent, jsEvent, view) {
- 
-                    $(this).css('background', 'red');
-                    //al evento click; al hacer clic sobre un evento cambiara de background
-                    //a color rojo y nos enviara a los datos generales del evento seleccionado
+            setTimeout(function() {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'slideDown',
+                    timeOut: 4000
+                };
+                toastr.success('Sistema Academico de Asistencias', 'Bienvenido a Academic System - {{ Auth::user()->name }}');
+
+            }, 1300);
+
+
+            var data1 = [
+                [0,4],[1,8],[2,5],[3,10],[4,4],[5,16],[6,5],[7,11],[8,6],[9,11],[10,30],[11,10],[12,13],[13,4],[14,3],[15,3],[16,6]
+            ];
+            var data2 = [
+                [0,1],[1,0],[2,2],[3,0],[4,1],[5,3],[6,1],[7,5],[8,2],[9,3],[10,2],[11,1],[12,0],[13,2],[14,8],[15,0],[16,0]
+            ];
+            $("#flot-dashboard-chart").length && $.plot($("#flot-dashboard-chart"), [
+                data1, data2
+            ],
+                    {
+                        series: {
+                            lines: {
+                                show: false,
+                                fill: true
+                            },
+                            splines: {
+                                show: true,
+                                tension: 0.4,
+                                lineWidth: 1,
+                                fill: 0.4
+                            },
+                            points: {
+                                radius: 0,
+                                show: true
+                            },
+                            shadowSize: 2
+                        },
+                        grid: {
+                            hoverable: true,
+                            clickable: true,
+                            tickColor: "#d5d5d5",
+                            borderWidth: 1,
+                            color: '#d5d5d5'
+                        },
+                        colors: ["#1ab394", "#1C84C6"],
+                        xaxis:{
+                        },
+                        yaxis: {
+                            ticks: 4
+                        },
+                        tooltip: false
+                    }
+            );
+
+            var doughnutData = [
+                {
+                    value: 300,
+                    color: "#a3e1d4",
+                    highlight: "#1ab394",
+                    label: "App"
                 },
- 
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
+                {
+                    value: 50,
+                    color: "#dedede",
+                    highlight: "#1ab394",
+                    label: "Software"
                 },
- 
-                lang:currentLangCode,
-                editable: true,
-                eventLimit: true,
-                events:{
-             
-                    url:'http://localhost/AcademicSystem/public/api/agenda'
+                {
+                    value: 100,
+                    color: "#A4CEE8",
+                    highlight: "#1ab394",
+                    label: "Laptop"
                 }
-            });
- 
+            ];
+
+            var doughnutOptions = {
+                segmentShowStroke: true,
+                segmentStrokeColor: "#fff",
+                segmentStrokeWidth: 2,
+                percentageInnerCutout: 45, // This is 0 for Pie charts
+                animationSteps: 100,
+                animationEasing: "easeOutBounce",
+                animateRotate: true,
+                animateScale: false
+            };
+
+            var ctx = document.getElementById("doughnutChart").getContext("2d");
+            var DoughnutChart = new Chart(ctx).Doughnut(doughnutData, doughnutOptions);
+
+            var polarData = [
+                {
+                    value: 300,
+                    color: "#a3e1d4",
+                    highlight: "#1ab394",
+                    label: "App"
+                },
+                {
+                    value: 140,
+                    color: "#dedede",
+                    highlight: "#1ab394",
+                    label: "Software"
+                },
+                {
+                    value: 200,
+                    color: "#A4CEE8",
+                    highlight: "#1ab394",
+                    label: "Laptop"
+                }
+            ];
+
+            var polarOptions = {
+                scaleShowLabelBackdrop: true,
+                scaleBackdropColor: "rgba(255,255,255,0.75)",
+                scaleBeginAtZero: true,
+                scaleBackdropPaddingY: 1,
+                scaleBackdropPaddingX: 1,
+                scaleShowLine: true,
+                segmentShowStroke: true,
+                segmentStrokeColor: "#fff",
+                segmentStrokeWidth: 2,
+                animationSteps: 100,
+                animationEasing: "easeOutBounce",
+                animateRotate: true,
+                animateScale: false
+            };
+            var ctx = document.getElementById("polarChart").getContext("2d");
+            var Polarchart = new Chart(ctx).PolarArea(polarData, polarOptions);
+
         });
     </script>
-
-
-
-   <script type="text/javascript">
-   
-        $(document).ready(function(){
-            $("#eventos").click(function(){
-                $("#modaleventos").addClass('visible');
-            });
-        });
-
-        $(document).ready(function(){
-            $("#asistencias").click(function(){
-                $("#modalasistencias").addClass('visible');
-            });
-        });
-
-         $(document).ready(function(){
-            $("#asistenciastrabajador").click(function(){
-                $("#modalasistenciastrabajador").addClass('visible');
-            });
-        });
-
-    </script>
-
-
-
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

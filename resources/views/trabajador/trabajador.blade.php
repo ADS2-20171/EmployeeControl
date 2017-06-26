@@ -5,8 +5,8 @@
 @section('content')
     
     <div id='app'>
-    <div class="modal" :class="{ visible: newFormVisible }" style="overflow-y: auto;">
-        <div class="modal-content" style="width: auto;">
+    <div class="modal" :class="{ visible: newFormVisible }">
+        <div class="modal-content" style="width: 600px;">
             <span class="close" @click="newFormVisible = false" >&times;</span>
             <h4 class="modal-title" id="myModalLabel" >Registro de Trabajadores</h4>
             </br>
@@ -62,10 +62,6 @@
                                 <label>Condicion :</label>
                                 <input type="text" name="trabajador_condicion" v-model="trabajador.condicion" class="form-control">
                             </section>
-                            <section class="col-sm-6">
-                                <label>Subir Foto :</label>
-                                <input type="file" name="trabajador_imagen" ref="photo" class="form-control">
-                            </section>
                         </div>
                     </div>
                     </br>
@@ -76,8 +72,8 @@
         </div>
     </div>
 
-    <div class="modal" :class="{ visible: editFormVisible }" style="overflow-y: auto;">
-        <div class="modal-content" style="width: auto;">
+    <div class="modal" :class="{ visible: editFormVisible }">
+        <div class="modal-content" style="width: 600px;">
             <span class="close" @click="editFormVisible = false">&times;</span>
             <h4 class="modal-title" id="myModalLabel">Actualizar de Trabajadores</h4>
             </br>
@@ -159,7 +155,7 @@
         </div>
     
     <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover  dataTable" id="lista">
+        <table class="table table-striped table-bordered table-hover  dataTable" id="listaTrabajador">
             <thead class="thead-inverse">
                 <tr>
                     <th>Nombres y Apellidos</th>
@@ -182,7 +178,6 @@
                 </tr>
             </tbody>
         </table>
-        {!! $ta->render() !!}
     </div>
     </div>
     
@@ -207,7 +202,6 @@
             showEditar: function(trabajador) {
                 this.editFormVisible = true;
                 this.trabajador = {
-                    id: trabajador.idTrabajador,
                     nombres: trabajador.trabajador_nombres,
                     apellidos: trabajador.trabajador_apellidos,
                     dni: trabajador.trabajador_dni,
@@ -221,72 +215,40 @@
                 };
             },
 
-            EliminarTrabajador:function(id){
-                axios.delete('/AcademicSystem/public/api/trabajador/' + id).then(function(data){
-                    Push.create('Trabajador Eliminado!',{
-                        icon: '{{asset('img/icon.png')}}',
-                        timeout: 4000,
-                        onClick: function () {
-                            window.focus();
-                            this.close();
-                        }
-                    });
-                    // copia de los trabajadores
-                    var copy = this.trabajadores.slice(0);
-                    // filtras para obtener los trabajadores
-                    // que tengan un id diferente
-                    copy = copy.filter(function(trab) {
-                        return trab.idTrabajador !== id;
-                    });
-                    this.trabajadores = copy;
+            EliminarTrabajador:function(trabajador){
+                axios.delete('/AcademicSystem/public/api/trabajador',this.trabajador).then(function(data){
+                    alert(data.data.mensaje);
+                    var clone = {
+                        trabajador_nombres: this.trabajador.nombres,
+                        trabajador_apellidos: this.trabajador.apellidos,
+                        trabajador_sexo: this.trabajador.sexo,
+                        trabajador_cargo: this.trabajador.cargo,
+                        trabajador_condicion: this.trabajador.condicion
+
+                    }
+                    this.trabajadores.push(clone);
                 }.bind(this))
             },
 
 
-            ActualizarTrabajador:function(){
-                axios.put('/AcademicSystem/public/api/trabajador',this.trabajador).then(function(data){
-                    var copy = this.trabajadores.slice(0);
-                    copy.forEach(function(trab) {
-                        if (trab.idTrabajador === this.trabajador.id) {
-                            trab = data.data.mensaje;
-                        }
-                    }.bind(this));
-                    Push.create('Trabajador Actualizado!',{
-                        icon: '{{asset('img/icon.png')}}',
-                        timeout: 4000,
-                        onClick: function () {
-                            window.focus();
-                            this.close();
-                        }
-                    });
-                    this.trabajadores = copy;
+            ActualizarTrabajador:function(trabajador){
+                axios.update('/AcademicSystem/public/api/trabajador',this.trabajador).then(function(data){
+                    alert(data.data.mensaje);
+                    var clone = {
+                        trabajador_nombres: this.trabajador.nombres,
+                        trabajador_apellidos: this.trabajador.apellidos,
+                        trabajador_sexo: this.trabajador.sexo,
+                        trabajador_cargo: this.trabajador.cargo,
+                        trabajador_condicion: this.trabajador.condicion
+                                }
+                    this.trabajadores.push(clone);
                 }.bind(this))
             },
 
 
             RegistrarTrabajador:function(){
-                var data = new FormData()
-                data.append("nombres", this.trabajador.nombres)
-                data.append("apellidos" , this.trabajador.apellidos)
-                data.append("dni" , this.trabajador.dni)
-                data.append("fechnac", this.trabajador.fechnac)
-                data.append("sexo" , this.trabajador.sexo)
-                data.append("celular", this.trabajador.sexo)
-                data.append("fechinicio", this.trabajador.fechinicio)
-                data.append("estado", this.trabajador.estado)
-                data.append("cargo", this.trabajador.cargo)
-                data.append("condicion", this.trabajador.condicion)
-                data.append("photo", this.$refs.photo.files[0])
-                
-                axios.post('/AcademicSystem/public/api/trabajador',data).then(function(data){
-                    Push.create('Usuario Registrado!',{
-                        icon: '{{asset('img/icon.png')}}',
-                        timeout: 4000,
-                        onClick: function () {
-                            window.focus();
-                            this.close();
-                        }
-                    });
+                axios.post('/AcademicSystem/public/api/trabajador',this.trabajador).then(function(data){
+                    alert(data.data.mensaje);
                     var clone = {
                         trabajador_nombres: this.trabajador.nombres,
                         trabajador_apellidos: this.trabajador.apellidos,
