@@ -8,8 +8,12 @@ class HorarioModel extends Model
 {
     protected $table='horario';
 
-    protected $fillable = ['horario_descripcion','horario_inicio','horario_fin'];
+    protected $fillable = ['horario_descripcion','horario_inicio','horario_fin','horario_tipo'];
+
+    protected $primaryKey = 'idHorario';
 
     protected $hidden = ['remember_token'];
+
+    protected $date=['horario_inicio', 'horario_fin' ];
 
 }

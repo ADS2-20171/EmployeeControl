@@ -155,7 +155,7 @@
         </div>
     
     <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover  dataTable" id="listaTrabajador">
+        <table class="table table-striped table-bordered table-hover  dataTable" id="lista">
             <thead class="thead-inverse">
                 <tr>
                     <th>Nombres y Apellidos</th>
@@ -178,6 +178,7 @@
                 </tr>
             </tbody>
         </table>
+        {!! $ta->render() !!}
     </div>
     </div>
     
@@ -202,6 +203,7 @@
             showEditar: function(trabajador) {
                 this.editFormVisible = true;
                 this.trabajador = {
+                    id: trabajador.idTrabajador,
                     nombres: trabajador.trabajador_nombres,
                     apellidos: trabajador.trabajador_apellidos,
                     dni: trabajador.trabajador_dni,
@@ -215,40 +217,59 @@
                 };
             },
 
-            EliminarTrabajador:function(trabajador){
-                axios.delete('/AcademicSystem/public/api/trabajador',this.trabajador).then(function(data){
-                    alert(data.data.mensaje);
-                    var clone = {
-                        trabajador_nombres: this.trabajador.nombres,
-                        trabajador_apellidos: this.trabajador.apellidos,
-                        trabajador_sexo: this.trabajador.sexo,
-                        trabajador_cargo: this.trabajador.cargo,
-                        trabajador_condicion: this.trabajador.condicion
-
-                    }
-                    this.trabajadores.push(clone);
+            EliminarTrabajador:function(id){
+                axios.delete('/AcademicSystem/public/api/trabajador/' + id).then(function(data){
+                    Push.create('Trabajador Eliminado!',{
+                        icon: '{{asset('img/icon.png')}}',
+                        timeout: 4000,
+                        onClick: function () {
+                            window.focus();
+                            this.close();
+                        }
+                    });
+                    // copia de los trabajadores
+                    var copy = this.trabajadores.slice(0);
+                    // filtras para obtener los trabajadores
+                    // que tengan un id diferente
+                    copy = copy.filter(function(trab) {
+                        return trab.idTrabajador !== id;
+                    });
+                    this.trabajadores = copy;
                 }.bind(this))
             },
 
 
-            ActualizarTrabajador:function(trabajador){
-                axios.update('/AcademicSystem/public/api/trabajador',this.trabajador).then(function(data){
-                    alert(data.data.mensaje);
-                    var clone = {
-                        trabajador_nombres: this.trabajador.nombres,
-                        trabajador_apellidos: this.trabajador.apellidos,
-                        trabajador_sexo: this.trabajador.sexo,
-                        trabajador_cargo: this.trabajador.cargo,
-                        trabajador_condicion: this.trabajador.condicion
-                                }
-                    this.trabajadores.push(clone);
+            ActualizarTrabajador:function(){
+                axios.put('/AcademicSystem/public/api/trabajador',this.trabajador).then(function(data){
+                    var copy = this.trabajadores.slice(0);
+                    copy.forEach(function(trab) {
+                        if (trab.idTrabajador === this.trabajador.id) {
+                            trab = data.data.mensaje;
+                        }
+                    }.bind(this));
+                    Push.create('Trabajador Actualizado!',{
+                        icon: '{{asset('img/icon.png')}}',
+                        timeout: 4000,
+                        onClick: function () {
+                            window.focus();
+                            this.close();
+                        }
+                    });
+                    this.trabajadores = copy;
                 }.bind(this))
             },
 
 
             RegistrarTrabajador:function(){
                 axios.post('/AcademicSystem/public/api/trabajador',this.trabajador).then(function(data){
-                    alert(data.data.mensaje);
+                    Push.create('Usuario Registrado!',{
+                        icon: '{{asset('img/icon.png')}}',
+                        timeout: 4000,
+                        onClick: function () {
+                            window.focus();
+                            this.close();
+                        }
+                    });
                     var clone = {
                         trabajador_nombres: this.trabajador.nombres,
                         trabajador_apellidos: this.trabajador.apellidos,

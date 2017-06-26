@@ -17,7 +17,7 @@
     </header>
 
     <div id="content">
-        <section id="widget-grid" class="col-md-8 ">
+        <section id="widget-grid">
             <div class="row" id="form-full">
                 <article class="col-sm-12 col-md-12 col-lg-8" id="formulario">
                     <div class="col-md-6">
@@ -41,6 +41,9 @@
                         </fieldset>
                         </form>
                     </div>
+                </article>
+                <article class="col-sm-12 col-md-12 col-lg-6">
+                     
                 </article>
             </div>
         </section>
@@ -105,7 +108,7 @@
             RegistrarAsistencia:function(){
                 axios.post('/AcademicSystem/public/api/asistencia',this.asistencia).then(function(data){
                     if (data.data.status === 'success') {
-                          Push.create(data.data.message,{
+                          Push.create('Asistencia Registrada! ',{
                                 icon: '{{asset('img/icon.png')}}',
                                 timeout: 4000,
                                 onClick: function () {
@@ -130,7 +133,17 @@
             }
 
          }
-    }).$mount('#app')
+    }).$mount('#app')/*,
+
+        mounted:function(){
+            axios.get('/AcademicSystem/public/api/asistencia').then(function(data){
+                    this.asistencias=data.data;
+                    console.log(data);
+            }.bind(this))
+        }
+
+       }).*/
+
     </script>
 
 

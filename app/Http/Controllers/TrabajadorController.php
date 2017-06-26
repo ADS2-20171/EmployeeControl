@@ -13,7 +13,8 @@ class TrabajadorController extends Controller
     public function index()
     {
     	//$trabajadores = Trabajador::all();
-    	return view('trabajador.trabajador');
+        $ta=Trabajador::paginate();
+    	return view('trabajador.trabajador', compact('ta'));
 
     }
 
@@ -43,18 +44,29 @@ class TrabajadorController extends Controller
         
     }
 
-    public function UpdateTrabajador($id){
-    	$trabajador=Trabajador::find($id);
-        $trabajador->fill($request->all());
+    public function UpdateTrabajador(Request $requests){
+    	$trabajador=Trabajador::where('idTrabajador', $requests['id'])->first();
+        $trabajador->fill([
+            'trabajador_nombres' => $requests['nombres'],
+            'trabajador_apellidos' => $requests['apellidos'],
+            'trabajador_dni' => $requests['dni'],
+            'trabajador_FechNac' => Carbon::parse($requests['fechnac']),
+            'trabajador_sexo' => $requests['sexo'],
+            'trabajador_celular' => $requests['celular'],
+            'trabajador_FechInicio' => Carbon::parse($requests['fechinicio']),
+            'trabajador_estado' => $requests['estado'],
+            'trabajador_cargo' => $requests['cargo'],
+            'trabajador_condicion' => $requests['condicion'],
+        ]);
         $trabajador->save();
          return response()->json([
-                "mensaje"=>"Actualizado"
+                "mensaje"=> $trabajador
                 ]);
     }
 
 
     public function deleteTrabajador($id){
-    	 	$trabajador=Trabajador::find($id);
+    	 	$trabajador=Trabajador::where('idTrabajador', $id)->first();
 	        $trabajador->delete();
 	         return response()->json([
 	                "mensaje"=>"Eliminado"

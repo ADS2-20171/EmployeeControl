@@ -5,8 +5,8 @@
 @section('content')
     
 <div id='app'>
-<div class="modal" :class="{ visible: editFormVisible }" style="overflow-y: auto;">
-        <div class="modal-content" style="width: auto;" >
+<div class="modal" :class="{ visible: editFormVisible }">
+        <div class="modal-content" style="width: 600px;">
             <span class="close" @click="editFormVisible = false">&times;</span>
             <h4 class="modal-title" id="myModalLabel">Actualizar Usuario</h4>
             </br>
@@ -73,10 +73,8 @@
                    <button name="Editar" class="btn btn-primary" @click="showEditar(u)">Editar</button></br>
                    <button name="eliminar" class="btn btn-yellow" @click="EliminarUsuario(u.id)">Elimminar</button>
                     </td>
-                </tr>  
-                
+                </tr>
             </tbody>
-          
         </table>
     </div>
     </article>

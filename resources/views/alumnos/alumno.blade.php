@@ -30,7 +30,7 @@
                             </section>
                             <section class="col-sm-6">
                                 <label>Fecha de Nacimiento :</label>
-                                <input type="date" name="alumno_FechNac" v-model="alumno.fechnac" class="form-control">
+                                <input type="date" name="alumno_fechNac" v-model="alumno.fechnac" class="form-control">
                             </section>
                         </div>
                         <div class="row">
@@ -46,11 +46,11 @@
                         <div class="row">
                             <section class="col-sm-6">
                                 <label>Celular :</label>
-                                <input type="date" name="alumno_celular" v-model="alumno.celular" class="form-control">
+                                <input type="text" name="alumno_celular" v-model="alumno.celular" class="form-control">
                             </section>
                             <section class="col-sm-6">
                                 <label>Fecha de Matricula :</label>
-                                <input type="text" name="alumno_FechaMatric" v-model="alumno.fechamatric" class="form-control">
+                                <input type="date" name="alumno_FechaMatric" v-model="alumno.fechamatric" class="form-control">
                             </section>
                         </div>
                         <div class="row">
@@ -75,6 +75,30 @@
                         </div>
                     </div>
                     </br>
+                    <hr>
+                    <h4 class="modal-title" id="myModalLabel">Registrar Datos del Apoderado</h4>
+                    <div class="row">
+                            <section class="col-sm-6">
+                                <label>Nombres :</label>
+                                <input type="text" name="apoderado_nombres" v-model="apoderado.nombres" class="form-control">
+                            </section>
+                            <section class="col-sm-6">
+                                <label>Apellidos :</label>
+                                <input type="text" name="apoderado_apellidos"  v-model="apoderado.apellidos" class="form-control">
+                            </section>
+                            <section class="col-sm-6">
+                                <label>DNI :</label>
+                                <input type="text" name="apoderado_dni" v-model="apoderado.dni" class="form-control">
+                            </section>
+                            <section class="col-sm-6">
+                                <label>Direccion :</label>
+                                <input type="text" name="apoderado_direccion"  v-model="apoderado.direccion" class="form-control">
+                            </section>
+                            <section class="col-sm-6">
+                                <label>Celular :</label>
+                                <input type="text" name="apoderado_celular"  v-model="apoderado.celular" class="form-control">
+                            </section>
+                        </div>
                   <div class="modal-footer">
                     <button class="btn btn-primary"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i>   Registrar</button>
                   </div>
@@ -123,7 +147,7 @@
                         <div class="row">
                             <section class="col-sm-6">
                                 <label>Celular :</label>
-                                <input type="date" name="alumno_celular" v-model="alumno.celular" class="form-control">
+                                <input type="text" name="alumno_celular" v-model="alumno.celular" class="form-control">
                             </section>
                             <section class="col-sm-6">
                                 <label>Fecha de Matricula :</label>
@@ -155,7 +179,7 @@
                   <div class="modal-footer">
                     <button class="btn btn-success"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i>   Registrar</button>
                   </div>
-                </form>
+            </form>
         </div>
     </div>
 
@@ -170,7 +194,7 @@
         <div>
         <section style="padding: 20px">
             <button class="btn btn-primary" @click="MostrarModalNuevo">Agregar</button>
-             Buscar Alumno : <input type="text" name="">
+            <label>Buscar Alumno : <input type="text" name="" id="searchTerm"></label>
         </section>
         </div>
     
@@ -189,7 +213,7 @@
             <tbody>
                 <tr v-for="a in alumnos">
                     <td>${a.alumno_nombres}, ${a.alumno_apellidos}</td>
-                    <td>${a.alumno_sexo}</td>
+                    <td>${a.alumno_genero}</td>
                     <td>${a.alumno_direccion}</td>
                     <td>${a.alumno_nivel}</td>
                     <td>${a.alumno_grado}</td>
@@ -200,6 +224,7 @@
                 </tr>
             </tbody>
         </table>
+        {!! $al->render() !!}
     </div>
     </div>
     
@@ -211,6 +236,7 @@
                 return {
                     alumnos:[],
                     alumno:{},
+                    apoderado:{},
                     editFormVisible: false,
                     newFormVisible: false,
                  }
@@ -221,14 +247,14 @@
                 //$('#modalregistro').modal('show');
                 this.newFormVisible = true;
             },
-            showEditar: function(alumno) {
+            showEditar: function(alumno, apoderado) {
                 this.editFormVisible = true;
                 this.alumno = {
                     nombres: trabajador.trabajador_nombres,
                     apellidos: trabajador.trabajador_apellidos,
                     dni: trabajador.trabajador_dni,
                     fechnac: trabajador.trabajador_FechNac,
-                    sexo:  trabajador.trabajador_sexo,
+                    genero:  trabajador.trabajador_sexo,
                     celular: trabajador.trabajador_celular,
                     fechinicio: trabajador.trabajador_FechInicio,
                     estado: trabajador.trabajador_estado,
@@ -239,7 +265,14 @@
 
             EliminarAlumno:function(alumno){
                 axios.delete('/AcademicSystem/public/api/alumno',this.alumno).then(function(data){
-                    alert(data.data.mensaje);
+                    Push.create('Alumno Eliminado!',{
+                        icon: '{{asset('img/icon.png')}}',
+                        timeout: 4000,
+                        onClick: function () {
+                            window.focus();
+                            this.close();
+                        }
+                    });
                     var clone = {
                         alumno_nombres: this.alumno.nombres,
                         alumno_apellidos: this.alumno.apellidos,
@@ -271,7 +304,14 @@
 
             RegistrarAlumnos:function(){
                 axios.post('/AcademicSystem/public/api/alumno',this.alumno).then(function(data){
-                    alert(data.data.mensaje);
+                    Push.create('Alumno Registrado!',{
+                        icon: '{{asset('img/icon.png')}}',
+                        timeout: 4000,
+                        onClick: function () {
+                            window.focus();
+                            this.close();
+                        }
+                    });
                     var clone = {
                         alumno_nombres: this.alumno.nombres,
                         alumno_apellidos: this.alumno.apellidos,
