@@ -18,16 +18,14 @@ Route::resource('admin', 'AdminController');
 
 //ViewAlumno
 Route::resource('viewAlumno', 'ViewAlumnoController@index');
-Route::get('/api/viewalumno','ViewAlumnoController@getViewAlumno');
-
-
-
+Route::get('/api/viewAlumno','ViewAlumnoController@getViewAlumno');
+Route::resource('pdfViewAlumno','PDFViewAlumno');
 
 
 //ViewTrabajador
 Route::resource('viewTrabajador','ViewTrabajadorController@index');
 Route::get('/api/viewTrabajador','ViewTrabajadorController@getViewTrabajador');
-
+Route::resource('pdfViewTrabajador','PDFViewTrabajador');
 
 
 
@@ -46,22 +44,27 @@ Route::post('/api/trabajador','TrabajadorController@postTrabajoderes');
 Route::put('/api/trabajador','TrabajadorController@UpdateTrabajador');
 Route::delete('/api/trabajador/{id}','TrabajadorController@deleteTrabajador');
 
+
+//Alumnos
+Route::resource('alumno','AlumnoController@index');
+Route::get('/api/alumno','AlumnoController@getAlumno');
+Route::post('/api/alumno','AlumnoController@postAlumnos');
+Route::put('/api/alumno','AlumnoController@UpdateAlumno');
+Route::delete('/api/alumno/{id}','AlumnoController@deleteAlumnos');
+
+
 //Horarios
 Route::resource('horario','HorarioController@index');
 Route::get('/api/horario','HorarioController@getHorarios');
 Route::post('/api/horario','HorarioController@postHorarios');
 Route::put('/api/horario','HorarioController@UpdateHorario');
 Route::delete('/api/horario/{id}','HorarioController@deleteHorario');
-//Alumnos
-Route::resource('alumno','AlumnoController@index');
-Route::get('/api/alumno','AlumnoController@getAlumno');
-Route::post('/api/alumno','AlumnoController@postAlumnos');
-Route::put('/api/alumno','AlumnoController@UpdateAlumno');
-//Route::resource('/api/alumno/{alumno}','AlumnoController@deleteAlumnos');
 
 
 //Agenda
 Route::resource('agenda','AgendaController@index');
+Route::get('/api/agenda','AgendaController@getAgenda');
+Route::post('/api/agenda', 'AgendaController@PostEventos');
 
 
 

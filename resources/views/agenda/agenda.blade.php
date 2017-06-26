@@ -9,59 +9,49 @@
      <div class="modal" :class="{ visible: newFormVisible }">
         <div class="modal-content" style="width: 600px;">
             <span class="close" @click="newFormVisible = false" >&times;</span>
-            <h4 class="modal-title" id="myModalLabel" >Registro de Trabajadores</h4>
+            <h4 class="modal-title" id="myModalLabel" >Registro de Eventos</h4>
             </br>
-            <form id="trabajor" @submit.prevent="RegistrarTrabajador">
+            <form id="trabajor" @submit.prevent="RegistrarEventos">
                   <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
                     <div>
                         <div class="row">
                             <section class="col-sm-6">
-                                <label>Nombres :</label>
-                                <input type="text" name="trabajador_nombres" v-model="agenda.nombres" class="form-control">
-                            </section>
-                            <section class="col-sm-6">
-                                <label>Apellidos :</label>
-                                <input type="text" name="trabajador_apellidos"  v-model="agenda.apellidos" class="form-control">
+                                <label>Titulo :</label>
+                                <input type="text" name="evetnos_titulo" v-model="agenda.titulo" class="form-control">
                             </section>
                         </div>
                         <div class="row">
                             <section class="col-sm-6">
-                                <label>DNI :</label>
-                                <input type="text" name="trabajador_dni" v-model="agenda.dni" class="form-control">
+                                <label>Alumno :</label>
+                                <select name="idrol"  class="form-control" v-model="agenda.idAlumno">
+                                    @foreach ($alumno as $alumnos)
+                                    <option value="{{$alumnos->idAlumno}}" >{{$alumnos->alumno_nombres}}</option>
+                                    @endforeach
+                                </select>
                             </section>
                             <section class="col-sm-6">
-                                <label>Fecha de Nacimiento :</label>
-                                <input type="date" name="trabajador_FechNac" v-model="agenda.fechnac" class="form-control">
-                            </section>
-                        </div>
-                        <div class="row">
-                            <section class="col-sm-6">
-                                <label>Sexo :</label>
-                                <input type="text" name="trabajador_sexo" v-model="agenda.sexo" class="form-control">
-                            </section>
-                            <section class="col-sm-6">
-                                <label>Celular :</label>
-                                <input type="text" name="trabajador_celular" v-model="agenda.celular" class="form-control">
+                                <label>Trabajador :</label>
+                                <select name="idrol"  class="form-control" v-model="agenda.idTrabajador">
+                                    @foreach ($trabajador as $trabajadores)
+                                    <option value="{{$trabajadores->idTrabajador}}" >{{$trabajadores->trabajador_nombres}}</option>
+                                    @endforeach
+                                </select>
                             </section>
                         </div>
                         <div class="row">
                             <section class="col-sm-6">
-                                <label>Fecha de Ingreso :</label>
-                                <input type="date" name="trabajador_FechInicio" v-model="agenda.fechinicio" class="form-control">
+                                <label>Inicio del Evento :</label>
+                                <input type="date" name="eventos_inicio" v-model="agenda.inicio" class="form-control">
                             </section>
                             <section class="col-sm-6">
-                                <label>Estado :</label>
-                                <input type="text" name="trabajador_estado" v-model="agenda.estado" class="form-control">
+                                <label>Fin del Evento :</label>
+                                <input type="date" name="eventos_fin" v-model="agenda.fin" class="form-control">
                             </section>
                         </div>
                         <div class="row">
-                            <section class="col-sm-6">
-                                <label>Cargo :</label>
-                                <input type="text" name="trabajador_cargo" v-model="agenda.cargo" class="form-control">
-                            </section>
-                            <section class="col-sm-6">
-                                <label>Condicion :</label>
-                                <input type="text" name="trabajador_condicion" v-model="agenda.condicion" class="form-control">
+                            <section class="col-sm-12">
+                                <label>Contenido :</label>
+                                <textarea name="eventos_cuerpo" v-model="agenda.cuerpo" class="form-control"></textarea>
                             </section>
                         </div>
                     </div>
@@ -90,31 +80,24 @@
             <div id="form-full">
                 <div class="container">
                     <div class="row">
-                                <div class="pull-left form-inline">
-                                        <div class="btn-group">
-                                            <button class="btn btn-primary" data-calendar-nav="prev"><< Anterior</button>
-                                            <button class="btn" data-calendar-nav="today">Hoy</button>
-                                            <button class="btn btn-primary" data-calendar-nav="next">Siguiente >></button>
-                                        </div>
-                                        <div class="btn-group">
-                                            <button class="btn btn-warning" data-calendar-view="year">Año</button>
-                                            <button class="btn btn-warning active" data-calendar-view="month">Mes</button>
-                                            <button class="btn btn-warning" data-calendar-view="week">Semana</button>
-                                            <button class="btn btn-warning" data-calendar-view="day">Dia</button>
-                                        </div>
-                                
-                                </div>
                                 <div class="pull-right form-inline" style="width: 200px;height: 100px;"><br>
                                     <button class="btn btn-danger" @click="MostrarModalNuevo">Agregar Evento</button>
                                 </div>
                                 
                     </div>
 
-                    
                 </div>
                 
             </div>
         </section>
+
+                    
+                        <div class="card-content table-responsive">
+                       
+                                    <div id="calendar"></div>
+                                
+                            
+                        </div>        
     </div>
 
 </div>
@@ -131,59 +114,14 @@
                  }
               },
 
-        methods:{
+         methods:{
             MostrarModalNuevo:function(){
                 //$('#modalregistro').modal('show');
                 this.newFormVisible = true;
             },
-            showEditar: function(usuario) {
-                this.editFormVisible = true;
-                this.usuario = {
-                    descripcion: horario.horario_descripcion,
-                    inicio: horario.horario_inicio,
-                    fin: horario.horario_fin,
-                };
-            },
 
-            EliminarUsuario:function(usuario){
-                axios.delete('/AcademicSystem/public/api/usuario',this.usuario).then(function(data){
-                    Push.create('Usuario Eliminado!',{
-                        icon: '{{asset('img/icon.png')}}',
-                        timeout: 4000,
-                        onClick: function () {
-                            window.focus();
-                            this.close();
-                        }
-                    });
-                    var clone = {
-                        trabajador_nombres: this.trabajador.nombres,
-                        trabajador_apellidos: this.trabajador.apellidos,
-                        trabajador_sexo: this.trabajador.sexo,
-                        trabajador_cargo: this.trabajador.cargo,
-                        trabajador_condicion: this.trabajador.condicion
-
-                    }
-                    this.horarios.push(clone);
-                }.bind(this))
-            },
-
-
-            ActualizarUsuario:function(usuario){
-                axios.update('/AcademicSystem/public/api/usuario',this.usuario).then(function(data){
-                    //alert(data.data.mensaje);
-                    
-                    var clone = {
-                        horario_descripcion: this.horario.descripcion,
-                        horario_inicio: this.horario.inicio,
-                        horario_fin: this.horario.fin,
-                    }
-                    this.usuarios.push(clone);
-                }.bind(this))
-            },
-
-
-            RegistrarUsuario:function(){
-                axios.post('/AcademicSystem/public/api/usuario',this.usuario).then(function(data){
+            RegistrarEventos:function(){
+                axios.post('/AcademicSystem/public/api/agenda',this.agenda).then(function(data){
                     Push.create('Usuario Registrado!',{
                         icon: '{{asset('img/icon.png')}}',
                         timeout: 4000,
@@ -192,16 +130,13 @@
                             this.close();
                         }
                     });
-                    var clone = {
-                        horario_descripcion: this.horario.descripcion,
-                        horario_inicio: this.horario.inicio,
-                        horario_fin: this.horario.fin,
-                    }
-                    this.usuarios.push(clone);
+                    this.agendas.push(data.data);
                 }.bind(this))
             }
 
+
          },
+
 
         mounted:function(){
             axios.get('/AcademicSystem/public/api/agenda').then(function(data){
@@ -214,5 +149,5 @@
 
     </script>
 
-
+    
 @stop

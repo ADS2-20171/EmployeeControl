@@ -62,6 +62,10 @@
                                 <label>Condicion :</label>
                                 <input type="text" name="trabajador_condicion" v-model="trabajador.condicion" class="form-control">
                             </section>
+                            <section class="col-sm-6">
+                                <label>Subir Foto :</label>
+                                <input type="file" name="trabajador_imagen" ref="photo" class="form-control">
+                            </section>
                         </div>
                     </div>
                     </br>
@@ -261,7 +265,20 @@
 
 
             RegistrarTrabajador:function(){
-                axios.post('/AcademicSystem/public/api/trabajador',this.trabajador).then(function(data){
+                var data = new FormData()
+                data.append("nombres", this.trabajador.nombres)
+                data.append("apellidos" , this.trabajador.apellidos)
+                data.append("dni" , this.trabajador.dni)
+                data.append("fechnac", this.trabajador.fechnac)
+                data.append("sexo" , this.trabajador.sexo)
+                data.append("celular", this.trabajador.sexo)
+                data.append("fechinicio", this.trabajador.fechinicio)
+                data.append("estado", this.trabajador.estado)
+                data.append("cargo", this.trabajador.cargo)
+                data.append("condicion", this.trabajador.condicion)
+                data.append("photo", this.$refs.photo.files[0])
+                
+                axios.post('/AcademicSystem/public/api/trabajador',data).then(function(data){
                     Push.create('Usuario Registrado!',{
                         icon: '{{asset('img/icon.png')}}',
                         timeout: 4000,

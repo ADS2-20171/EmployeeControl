@@ -9,6 +9,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/font-awesome.css')}}" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="{{asset('css/fullcalendar.min.css')}}">
+    
+    <link rel="stylesheet" type="text/css" href="{{asset('css/jquery-ui.min.css')}}">
     <!-- Toastr style -->
     <link href="{{asset('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet">
      <link href="{{asset('css/calendar.css')}}" rel="stylesheet">
@@ -16,7 +20,9 @@
     <!-- Gritter -->
     <link href="{{asset('css/jquery.gritter.css')}}" rel="stylesheet">
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.css">
     <link rel="shortcut icon" href="{{asset('favicon.ico')}}">
+     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
     <!--Vue.JS-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.min.js"></script>
     <script src="{{asset('js/vue.js')}}"></script>
@@ -147,11 +153,15 @@
     <script src="{{asset('js/script.js')}}"></script>
     <script src="{{asset('js/push.js')}}"></script>
     <script src="{{asset('js/push.min.js')}}"></script>
-    
+<!--Recordar     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.js"></script> -->
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/jquery.metisMenu.js')}}"></script>
     <script src="{{asset('js/jquery.slimscroll.min.js')}}"></script>
-
+    <!--FullCalendar-->
+    <script src="{{asset('js/jquery-ui.custom.min.js')}}"></script>
+    <script src="{{asset('js/moment.min.js')}}"></script>
+    <script src="{{asset('js/fullcalendar.js')}}"></script>
+    <script src="{{asset('js/locale-all.js')}}"></script>
     <!-- Flot -->
     <script src="{{asset('js/jquery.flot.js')}}"></script>
     <script src="{{asset('js/jquery.flot.tooltip.min.js')}}"></script>
@@ -187,9 +197,46 @@
     <!-- Toastr -->
     <script src="{{asset('js/toastr.min.js')}}"></script>
     
-    
+    <script>
+        $(document).ready(function() {
+            var currentLangCode = 'es';//cambiar el idioma al español
+ 
+            $('#calendar').fullCalendar({
+                eventClick: function(calEvent,updateEvent, jsEvent, view) {
+ 
+                    $(this).css('background', 'red');
+                    //al evento click; al hacer clic sobre un evento cambiara de background
+                    //a color rojo y nos enviara a los datos generales del evento seleccionado
+                },
+ 
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+ 
+                lang:currentLangCode,
+                editable: true,
+                eventLimit: true,
+                events:{
+             
+                    url:'http://localhost/AcademicSystem/public/api/agenda'
+                }
+            });
+ 
+        });
+    </script>
 
-   
+
+
+   <script type="text/javascript">
+    $(window).load(function(){
+        $('#mostrarmodal').addClass('visible');
+    });
+    </script>
+
+
+
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

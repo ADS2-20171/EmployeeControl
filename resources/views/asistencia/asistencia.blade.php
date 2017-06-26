@@ -42,9 +42,6 @@
                         </form>
                     </div>
                 </article>
-                <article class="col-sm-12 col-md-12 col-lg-6">
-                     
-                </article>
             </div>
         </section>
     </div>

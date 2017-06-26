@@ -24,6 +24,14 @@ class TrabajadorController extends Controller
     }
 
     public function postTrabajoderes(Request $requests){
+
+
+        $dir="C:/xampp/htdocs/AcademicSystem/public/avatar/";
+        $uuid = uniqid();
+        $name = $_FILES["photo"]["name"];
+        $temp= $_FILES["photo"]["tmp_name"];
+        $ext = pathinfo($name, PATHINFO_EXTENSION); 
+        $path = $dir.$uuid.".".$ext;
             Trabajador::create([
             'trabajador_nombres' => $requests['nombres'],
             'trabajador_apellidos' => $requests['apellidos'],
@@ -35,8 +43,9 @@ class TrabajadorController extends Controller
             'trabajador_estado' => $requests['estado'],
             'trabajador_cargo' => $requests['cargo'],
             'trabajador_condicion' => $requests['condicion'],
+            'trabajador_imagen' => $uuid.".".$ext,
             ]);
-
+            move_uploaded_file($temp, $path);
             return response()->json([
                 "mensaje" => "creado"
                 ]);

@@ -10,5 +10,7 @@ class Apoderado extends Model
 
     protected $fillable = ['apoderado_nombres','apoderado_apellidos','apoderado_direccion','apoderado_dni','apoderado_celular'];
 
+    protected $primaryKey = 'idApoderado';
+
     protected $hidden = ['remember_token'];
 }
