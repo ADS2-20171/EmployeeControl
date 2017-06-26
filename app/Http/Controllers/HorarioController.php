@@ -10,13 +10,21 @@ class HorarioController extends Controller
 {
 
 	public function index(){
-        $ho=HorarioModel::paginate();
-       	return view('horarios.horarios', compact('ho'));
+       	return view('horarios.horarios');
 	}
 
 
     public function getHorarios(){
     	return HorarioModel::all();
+    }
+
+    public function Pagination(Request $request){
+       $limit = (int) $request->input('limit');
+        $page = (int) $request->input('page');
+        $offset = ($limit * $page) - $limit;
+        return HorarioModel::take($limit)->skip($offset)->get();      
+
+        
     }
 
 
@@ -25,6 +33,7 @@ class HorarioController extends Controller
     		'horario_descripcion'=>$requests['descripcion'],
     		'horario_inicio'=>Carbon::parse($requests['inicio']),
     		'horario_fin'=>Carbon::parse($requests['fin']),
+            'horario_estado'=>1,
     		]);
 
     	return response()->json([

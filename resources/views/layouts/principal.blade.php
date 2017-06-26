@@ -55,7 +55,7 @@
                     <li class="nav-header">
                         <div class="dropdown profile-element"> 
                             <span>
-                            <img alt="image" class="img-circle" src="{{asset('img/profile_small.jpg')}}">
+                            <img alt="image" class="img-circle" src="{{asset('img/avatar.png')}}">
                              </span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> 
@@ -67,7 +67,7 @@
                         </div>
        @if(Auth::user()->getRol() == 'Administrador')
                     <div class="logo-element">
-                        <img alt="image" class="img-circle" src="{{asset('img/profile_small.jpg')}}">
+                        <img alt="image" class="img-circle" src="{{asset('img/avatar.png')}}">
                     </div>
                     </li>
                     <li>

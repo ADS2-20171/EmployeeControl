@@ -90,7 +90,7 @@
 
         <div>
         <section style="padding: 20px">
-             <label>Buscar Alumno : <input type="text" name="" id="searchTerm"></label>
+             
         </section>
         </div>
     
@@ -117,7 +117,16 @@
                     <td>${ra.asistencia_horasalida}</td>
                     <td>
                    <button name="Editar" class="btn btn-primary" @click="showEditar(ra)"><i class="fa fa-eye" aria-hidden="true"></i> Editar</button>
-                   <button name="eliminar" class="btn btn-yellow" @click="EliminarReporteAlumno(ra.idAsistencia)">Elimminar</button>
+                   <button name="eliminar" class="btn btn-yellow" @click="EliminarReporteAlumno(ra.idAsistencia)"><i class="fa fa-trash-o" aria-hidden="true"></i> Elimminar</button>
+                    </td>
+                </tr>
+                <tr v-if="reportalumnos.length===0">
+                    <td colspan="20" style="text-align: center;"><img src="{{asset('img/cargar.gif')}}"></td>
+                </tr>
+                <tr>
+                    <td>
+                    <button @click="previus()" class="btn btn-primary"><i class="fa fa-backward" aria-hidden="true"></i></button>
+                    <button @click="next()" class="btn btn-primary"><i class="fa fa-forward" aria-hidden="true"></i></button>
                     </td>
                 </tr>
             </tbody>
@@ -135,6 +144,8 @@
                     reportalumno:{},
                     editFormVisible: false,
                     newFormVisible: false,
+                    contador: 1,
+                    limit: 4,
                  }
               },
 
@@ -159,6 +170,24 @@
                     seccion: reportalumno.alumno_seccion,
                     observacion: reportalumno.asistencia_observaciones, 
                 };
+            },
+
+            Pagination:function(contador){
+                 console.log(this.contador, this.limit);
+                axios.get('/AcademicSystem/public/api/reportalumno/pagination?page='+ this.contador + '&limit=' + this.limit).then(function(response){
+                    this.reportalumnos=response.data;
+                    console.log(this.reportalumnos);
+                 }.bind(this))
+            },
+
+            previus:function(){
+                this.contador --;
+                this.Pagination();
+            },
+
+            next:function(){
+                this.contador ++;
+                this.Pagination();
             },
 
             EliminarReporteAlumno:function(id){
@@ -206,10 +235,13 @@
          },
 
         mounted:function(){
-            axios.get('/AcademicSystem/public/api/reportalumno').then(function(data){
+            /*axios.get('/AcademicSystem/public/api/reportalumno').then(function(data){
                     this.reportalumnos=data.data;
                     console.log(data);
-            }.bind(this))
+            }.bind(this))*/
+            setTimeout(function(){
+                this.Pagination();
+            }.bind(this),2000);
         }
 
        }).$mount('#app')

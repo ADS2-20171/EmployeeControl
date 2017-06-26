@@ -19,7 +19,7 @@
     <div id="content">
         <section id="widget-grid" class="col-md-8 ">
             <div class="row" id="form-full">
-                <article class="col-sm-12 col-md-12 col-lg-8" id="formulario">
+                <article class="col-sm-12 col-md-12" id="formulario">
                     <div class="col-md-6">
                         <center>
                              <i class="fa fa-clock-o fa-5x" aria-hidden="true"></i><br>
@@ -32,7 +32,7 @@
                                <div class="row">
                                <section class="col col-10">
                                    <label><h4>Ingrese el Número de DNI para registrar su asistencia en el Sistema Academico</h4></label><br><br>
-                                    <input type="text" class="form-control"  v-on:keyup.enter="submit" id="asistencia" name="asistencia" v-model="asistencia.codigo" placeholder="Digite su Código">
+                                    <input type="text" class="form-control"  v-on:keyup.enter="submit" id="asistencia" name="asistencia" v-model="asistencia.codigo" placeholder="Digite su Código" required="Digite su Codigo">
                                     <div class="modal-footer">
                                         <button class="btn btn-primary"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> Registrar</button>
                                     </div>

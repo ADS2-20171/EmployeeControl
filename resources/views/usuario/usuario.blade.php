@@ -70,8 +70,17 @@
                     <td>${u.email}</td>
                     <td>${u.idrol}</td>
                     <td>
-                   <button name="Editar" class="btn btn-primary" @click="showEditar(u)">Editar</button></br>
-                   <button name="eliminar" class="btn btn-yellow" @click="EliminarUsuario(u.id)">Elimminar</button>
+                   <button name="Editar" class="btn btn-primary" @click="showEditar(u)"><i class="fa fa-eye" aria-hidden="true"></i> Editar</button></p>
+                   <button name="eliminar" class="btn btn-yellow" @click="EliminarUsuario(u.id)"><i class="fa fa-trash-o" aria-hidden="true"></i> Elimminar</button>
+                    </td>
+                </tr>
+                <tr v-if="usuarios.length===0">
+                    <td colspan="20" style="text-align: center;"><img src="{{asset('img/cargar.gif')}}"></td>
+                </tr>
+                <tr>
+                    <td>
+                    <button @click="previus()" class="btn btn-primary"><i class="fa fa-backward" aria-hidden="true"></i></button>
+                    <button @click="next()" class="btn btn-primary"><i class="fa fa-forward" aria-hidden="true"></i></button>
                     </td>
                 </tr>  
                 
@@ -81,7 +90,7 @@
     </div>
     </article>
     <article class="col-sm-12 col-md-12 col-lg-7" id="formulario">
-    <div role="content">
+    <div role="content" >
              <header role="heading">
                <h2>Registro de Usuarios</h2>
              </header>
@@ -92,7 +101,7 @@
                         <div class="row">
                             <section class="col-sm-6">
                                 <label>Alumnos :</label>
-                                <select name="idrol"  class="form-control" v-model="usuario.alumno">
+                                <select name="idrol"  class="form-control" v-model="usuario.alumno" required="Seleccione un Alumno">
                                 @foreach($alumnos as $alumno)
                                     <option value="{{$alumno->idAlumno}}">{{$alumno->alumno_nombres}} {{$alumno->alumno_apellidos}}</option>
                                    
@@ -150,6 +159,8 @@
                     users:{},
                     editFormVisible: false,
                     newFormVisible: false,
+                    contador: 1,
+                    limit: 3,
                  }
               },
 
@@ -167,6 +178,24 @@
                     password:users.password,
                     idrol: users.idrol,
                 };
+            },
+
+            Pagination:function(contador){
+                 console.log(this.contador, this.limit);
+                axios.get('/AcademicSystem/public/api/usuario/pagination?page='+ this.contador + '&limit=' + this.limit).then(function(response){
+                    this.usuarios=response.data;
+                    console.log(this.usuarios);
+                 }.bind(this))
+            },
+
+            previus:function(){
+                this.contador --;
+                this.Pagination();
+            },
+
+            next:function(){
+                this.contador ++;
+                this.Pagination();
             },
 
             EliminarUsuario:function(users){
@@ -227,10 +256,13 @@
          },
 
         mounted:function(){
-            axios.get('/AcademicSystem/public/api/usuario').then(function(data){
+            /*axios.get('/AcademicSystem/public/api/usuario').then(function(data){
                     this.usuarios=data.data;
                     console.log(data);
-            }.bind(this))
+            }.bind(this))*/
+            setTimeout(function(){
+                this.Pagination();
+            }.bind(this),2000);
         }
 
        }).$mount('#app')

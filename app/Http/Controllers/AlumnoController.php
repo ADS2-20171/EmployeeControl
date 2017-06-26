@@ -20,6 +20,15 @@ class AlumnoController extends Controller
             
     }
 
+    public function Pagination(Request $request){
+       $limit = (int) $request->input('limit');
+        $page = (int) $request->input('page');
+        $offset = ($limit * $page) - $limit;
+        return Alumno::take($limit)->skip($offset)->get();      
+
+        
+    }
+
 
     public function postAlumnos(Request $requests)
     {
@@ -97,7 +106,4 @@ class AlumnoController extends Controller
 
     }
 
-    public function paginate($limit, $page){
-
-    }
 }

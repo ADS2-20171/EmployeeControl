@@ -33,6 +33,7 @@ Route::resource('pdfViewTrabajador','PDFViewTrabajador');
 //Usuarios
 Route::resource('usuario','UsuarioController@index');
 Route::get('/api/usuario','UsuarioController@getUsuarios');
+Route::get('/api/usuario/pagination','UsuarioController@Pagination');
 Route::post('/api/usuario', 'UsuarioController@postUsuarios');
 Route::put('/api/usuario','UsuarioController@UpdateUsuarios');
 Route::delete('/api/usuario/{id}','UsuarioController@DeleteUsuarios');
@@ -40,6 +41,7 @@ Route::delete('/api/usuario/{id}','UsuarioController@DeleteUsuarios');
 //Trabajador
 Route::resource('trabajador','TrabajadorController@index');
 Route::get('/api/trabajador','TrabajadorController@getTrabajadores');
+Route::get('/api/trabajador/pagination','TrabajadorController@Pagination');
 Route::post('/api/trabajador','TrabajadorController@postTrabajoderes');
 Route::put('/api/trabajador','TrabajadorController@UpdateTrabajador');
 Route::delete('/api/trabajador/{id}','TrabajadorController@deleteTrabajador');
@@ -47,6 +49,7 @@ Route::delete('/api/trabajador/{id}','TrabajadorController@deleteTrabajador');
 
 //Alumnos
 Route::resource('alumno','AlumnoController@index');
+Route::get('/api/alumno/pagination','AlumnoController@Pagination');
 Route::get('/api/alumno','AlumnoController@getAlumno');
 Route::post('/api/alumno','AlumnoController@postAlumnos');
 Route::put('/api/alumno','AlumnoController@UpdateAlumno');
@@ -56,6 +59,7 @@ Route::delete('/api/alumno/{id}','AlumnoController@deleteAlumnos');
 //Horarios
 Route::resource('horario','HorarioController@index');
 Route::get('/api/horario','HorarioController@getHorarios');
+Route::get('/api/horario/pagination','HorarioController@Pagination');
 Route::post('/api/horario','HorarioController@postHorarios');
 Route::put('/api/horario','HorarioController@UpdateHorario');
 Route::delete('/api/horario/{id}','HorarioController@deleteHorario');
@@ -71,6 +75,7 @@ Route::post('/api/agenda', 'AgendaController@PostEventos');
 //Reportes Alumnos
 Route::resource('reportalumno','ReportAlumnoController@index');
 Route::get('/api/reportalumno','ReportAlumnoController@getReportAlumno');
+Route::get('/api/reportalumno/pagination','ReportAlumnoController@Pagination');
 Route::put('/api/reportalumno','ReportAlumnoController@UpdateReportAlumno');
 Route::delete('/api/reportalumno/{id}','ReportAlumnoController@DeleteReportAlumno');
 
@@ -78,6 +83,7 @@ Route::delete('/api/reportalumno/{id}','ReportAlumnoController@DeleteReportAlumn
 //Reportes Trabjadores
 Route::resource('reporttrabajador','ReportTrabajadorController@index');
 Route::get('/api/reporttrabajador','ReportTrabajadorController@getReportTrabajador');
+Route::get('/api/reporttrabajador/pagination','ReportTrabajadorController@Pagination');
 Route::put('/api/reporttrabajador','ReportTrabajadorController@UpdateReportTrabajador');
 Route::delete('/api/reporttrabajador/{id}','ReportTrabajadorController@DeleteReportTrabajador');
 

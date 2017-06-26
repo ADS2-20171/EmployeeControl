@@ -6,8 +6,8 @@
     
 <div id='app'>
 
-     <div class="modal" :class="{ visible: newFormVisible }">
-        <div class="modal-content" style="width: 600px;">
+     <div class="modal" :class="{ visible: newFormVisible }" style="overflow-y: auto;">
+        <div class="modal-content" style="width: auto;">
             <span class="close" @click="newFormVisible = false" >&times;</span>
             <h4 class="modal-title" id="myModalLabel" >Registro de Eventos</h4>
             </br>

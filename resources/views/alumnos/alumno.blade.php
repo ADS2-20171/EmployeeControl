@@ -16,7 +16,7 @@
                     <div class="row">
                             <section class="col-sm-6">
                                 <label>Nombres :</label>
-                                <input type="text" name="apoderado_nombres" v-model="apoderado.nombres" class="form-control">
+                                <input type="text" name="apoderado_nombres" v-model="apoderado.nombres" class="form-control" required="Ingrese Nombre del Apoderado">
                             </section>
                             <section class="col-sm-6">
                                 <label>Apellidos :</label>
@@ -42,7 +42,7 @@
                         <div class="row">
                             <section class="col-sm-6">
                                 <label>Nombres :</label>
-                                <input type="text" name="alumno_nombres" v-model="alumno.nombresalumno" class="form-control">
+                                <input type="text" name="alumno_nombres" v-model="alumno.nombresalumno" class="form-control" required="Ingrese el nombre del Alumno">
                             </section>
                             <section class="col-sm-6">
                                 <label>Apellidos :</label>
@@ -101,7 +101,7 @@
                         </div>
                         <div class="row">
                             <section class="col-sm-6">
-                                <label>Subir Foto:</label>
+                                <label>Subir Foto del Alumno:</label>
                                 <input type="file" name="alumno_imagen" ref="photo" class="form-control">
                             </section>
                               
@@ -203,9 +203,6 @@
         <div>
         <section style="padding: 20px">
             <button class="btn btn-primary" @click="MostrarModalNuevo">Agregar</button>
-            <form id="search">
-                Buscar <input name="query" >
-            </form>
         </section>
         </div>
     
@@ -222,36 +219,30 @@
                 </tr>
             </thead>
             <tbody>
-           <!--  -->     <tr v-for="a in alumnos" >
+                <tr v-for="a in alumnos" >
                     <td>${a.alumno_nombres}, ${a.alumno_apellidos}</td>
                     <td>${a.alumno_genero}</td>
                     <td>${a.alumno_direccion}</td>
                     <td>${a.alumno_nivel}</td>
                     <td>${a.alumno_grado}</td>
                     <td>
-                   <button name="Editar" class="btn btn-primary" @click="showEditar(a)">Editar</button>
-                   <button name="eliminar" class="btn btn-yellow" @click="EliminarAlumno(a.idAlumno)">Elimminar</button>
+                   <button name="Editar" class="btn btn-primary" @click="showEditar(a)"><i class="fa fa-eye" aria-hidden="true"></i> Editar</button></p>
+                   <button name="eliminar" class="btn btn-yellow" @click="EliminarAlumno(a.idAlumno)"><i class="fa fa-trash-o" aria-hidden="true"></i> Elimminar</button>
                     </td>
                 </tr>
-              <!--   <tr class="pagination">
+                <tr v-if="alumnos.length===0">
+                    <td colspan="20" style="text-align: center;"><img src="{{asset('img/cargar.gif')}}"></td>
+                </tr>
+                <tr>
                     <td>
-                        <a href="" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
+                    <button @click="previus()" class="btn btn-primary"><i class="fa fa-backward" aria-hidden="true"></i></button>
+                    <button @click="next()" class="btn btn-primary"><i class="fa fa-forward" aria-hidden="true"></i></button>
                     </td>
-                    <td><a href="">1</a></td>
-                    <td><a href="">2</a></td>
-                    <td><a href="">3</a></td>
-                    <td><a href="">4</a></td>
-                    <td><a href="">5</a></td>
-                    <td>
-                        <a href="" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </td>
-                </tr> -->
-           
+                </tr>
+          
             </tbody>
+            
+            
         </table>
 
     </div>
@@ -263,12 +254,14 @@
         delimiters:['${','}'],
         data:function(){
                 return {
+                    
                     alumnos:[],
                     alumno:{},
                     apoderado:{},
                     editFormVisible: false,
                     newFormVisible: false,
-
+                    contador: 1,
+                    limit: 3,
                  }
               },
         methods:{
@@ -297,11 +290,22 @@
                 };
             },
 
-            Pagination:function(){
-                axios.get('/AcademicSystem/public/api/alumno').then(function(response){
+            Pagination:function(contador){
+                 console.log(this.contador, this.limit);
+                axios.get('/AcademicSystem/public/api/alumno/pagination?page='+ this.contador + '&limit=' + this.limit).then(function(response){
                     this.alumnos=response.data;
                     console.log(this.alumnos);
                  }.bind(this))
+            },
+
+            previus:function(){
+                this.contador --;
+                this.Pagination();
+            },
+
+            next:function(){
+                this.contador ++;
+                this.Pagination();
             },
 
             EliminarAlumno:function(id){
@@ -343,8 +347,9 @@
                             this.close();
                         }
                     });
-                    editFormVisible: false,
+                    
                     this.alumnos=copy;
+                    this.editFormVisible = false;
                 }.bind(this))
             },
 
@@ -384,6 +389,7 @@
                             this.close();
                         }
                     });
+
                     var clone = {
                         alumno_nombres: this.alumno.nombres,
                         alumno_apellidos: this.alumno.apellidos,
@@ -392,14 +398,18 @@
                         alumno_nivel: this.alumno.nivel,
                         alumno_grado: this.alumno.grado                       
                     }
+
                     this.alumnos.push(clone);
+                    this.newFormVisible = false;
                 }.bind(this))
             }
 
          },
 
         mounted:function(){
-           this.Pagination();
+            setTimeout(function(){
+                this.Pagination();
+            }.bind(this),2000);
         }
 
        }).$mount('#app')

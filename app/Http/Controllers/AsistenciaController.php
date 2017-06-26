@@ -75,12 +75,19 @@ class AsistenciaController extends Controller
                             $tardanza=$horallegada->diffInHours($carbon_entrada);
                             $tardanzaminutos=$horallegada->diffInMinutes($carbon_entrada);
                             if ($tardanza>0) {
-                                Asistencia::create([
+                                /*Asistencia::create([
                                 'asistencia_horasalida'=> $horallegada,
                                 'asistencia_asistio'=>false,
                                 'idTrabajador'=>$trabajador->idTrabajador,
-                                ]);
+                                ]);*/
 
+                                $trab=$trabajador->idTrabajador;
+                                $asistencia=Asistencia::where('idTrabajador','=',$trab)->where('asistencia.fecha','=', $hoy )->first();
+                                $asistencia->fill([
+                                    'asistencia_horasalida'=> $horallegada,
+                                    'asistencia_asistio'=>false,
+                                    ]);
+                                $asistencia->save();
                                  
                             }
                             return [ "status" => "success", "message" => "Salida de Trabajador Registrado"];
@@ -135,11 +142,18 @@ class AsistenciaController extends Controller
                             $tardanza=$horallegada->diffInHours($carbon_entrada);
                             $tardanzaminutos=$horallegada->diffInMinutes($carbon_entrada);
                             if ($tardanza>0) {
-                                Asistencia::create([
+                               /* Asistencia::create([
                                 'asistencia_horasalida'=> $horallegada,
                                 'asistencia_asistio'=>false,
                                 'idAlumno'=>$alumno->idAlumno,
-                                ]);
+                                ]);*/
+                                $alum=$alumno->idAlumno;
+                                $asistencia=Asistencia::where('idAlumno','=',$alum)->where('asistencia.fecha','=', $hoy )->first();
+                                $asistencia->fill([
+                                    'asistencia_horasalida'=> $horallegada,
+                                    'asistencia_asistio'=>false,
+                                    ]);
+                                $asistencia->save();
 
                             }
                             return [ "status" => "success", "message" => "Salida de Alumno Registrado"];

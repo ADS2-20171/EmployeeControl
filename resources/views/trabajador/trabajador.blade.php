@@ -16,7 +16,7 @@
                         <div class="row">
                             <section class="col-sm-6">
                                 <label>Nombres :</label>
-                                <input type="text" name="trabajador_nombres" v-model="trabajador.nombres" class="form-control">
+                                <input type="text" name="trabajador_nombres" v-model="trabajador.nombres" class="form-control" required="Ingrese Nombre del Trabajador">
                             </section>
                             <section class="col-sm-6">
                                 <label>Apellidos :</label>
@@ -87,7 +87,7 @@
                         <div class="row">
                             <section class="col-sm-6">
                                 <label>Nombres :</label>
-                                <input type="text" name="trabajador_nombres" v-model="trabajador.nombres" class="form-control">
+                                <input type="text" name="trabajador_nombres" v-model="trabajador.nombres" class="form-control" >
                             </section>
                             <section class="col-sm-6">
                                 <label>Apellidos :</label>
@@ -154,7 +154,7 @@
         <div>
         <section style="padding: 20px">
             <button class="btn btn-primary" @click="MostrarModalNuevo">Agregar</button>
-            <label>Buscar Trabajador : <input type="text" name="" id="searchTerm"></label>
+            
         </section>
         </div>
     
@@ -176,13 +176,22 @@
                     <td>${t.trabajador_cargo}</td>
                     <td>${t.trabajador_condicion}</td>
                     <td>
-                   <button name="Editar" class="btn btn-primary" @click="showEditar(t)">Editar</button>
-                   <button name="eliminar" class="btn btn-yellow" @click="EliminarTrabajador(t.idTrabajador)">Elimminar</button>
+                   <button name="Editar" class="btn btn-primary" @click="showEditar(t)"><i class="fa fa-eye" aria-hidden="true"></i> Editar</button></p>
+                   <button name="eliminar" class="btn btn-yellow" @click="EliminarTrabajador(t.idTrabajador)"><i class="fa fa-trash-o" aria-hidden="true"></i> Elimminar</button>
+                    </td>
+                </tr>
+                <tr v-if="trabajadores.length===0">
+                    <td colspan="20" style="text-align: center;"><img src="{{asset('img/cargar.gif')}}"></td>
+                </tr>
+                <tr>
+                    <td>
+                    <button @click="previus()" class="btn btn-primary"><i class="fa fa-backward" aria-hidden="true"></i></button>
+                    <button @click="next()" class="btn btn-primary"><i class="fa fa-forward" aria-hidden="true"></i></button>
                     </td>
                 </tr>
             </tbody>
         </table>
-        {!! $ta->render() !!}
+        
     </div>
     </div>
     
@@ -196,6 +205,8 @@
                     trabajador:{},
                     editFormVisible: false,
                     newFormVisible: false,
+                    contador: 1,
+                    limit: 3,
                  }
               },
 
@@ -220,6 +231,25 @@
                     condicion: trabajador.trabajador_condicion,
                 };
             },
+
+            Pagination:function(contador){
+                console.log(this.contador, this.limit);
+                axios.get('/AcademicSystem/public/api/trabajador/pagination?page='+ this.contador + '&limit=' + this.limit).then(function(response){
+                    this.trabajadores=response.data;
+                    console.log(this.trabajadores);
+                 }.bind(this))
+            },
+
+            previus:function(){
+                this.contador --;
+                this.Pagination();
+            },
+
+            next:function(){
+                this.contador ++;
+                this.Pagination();
+            },
+
 
             EliminarTrabajador:function(id){
                 axios.delete('/AcademicSystem/public/api/trabajador/' + id).then(function(data){
@@ -302,10 +332,13 @@
          },
 
         mounted:function(){
-            axios.get('/AcademicSystem/public/api/trabajador').then(function(data){
+            /*axios.get('/AcademicSystem/public/api/trabajador').then(function(data){
                     this.trabajadores=data.data;
                     console.log(data);
-            }.bind(this))
+            }.bind(this))*/
+           setTimeout(function(){
+                this.Pagination();
+            }.bind(this),2000);
         }
 
        }).$mount('#app')

@@ -17,6 +17,15 @@ class ReportTrabajadorController extends Controller
 		return \DB::table('trabajador')->join('asistencia', 'trabajador.idTrabajador', '=', 'asistencia.idTrabajador')->join('horario','trabajador.idHorario','=','horario.idHorario')->select('trabajador.*','horario.*','asistencia.*')->get();
 	}
 
+	public function Pagination(Request $request){
+       $limit = (int) $request->input('limit');
+        $page = (int) $request->input('page');
+        $offset = ($limit * $page) - $limit;
+        return \DB::table('trabajador')->join('asistencia', 'trabajador.idTrabajador', '=', 'asistencia.idTrabajador')->join('horario','trabajador.idHorario','=','horario.idHorario')->select('trabajador.*','horario.*','asistencia.*')->take($limit)->skip($offset)->get();      
+
+        
+    }
+
 	public function UpdateReportTrabajador(Request $requests){
     	$reporttrabajador=Asistencia::where('idAsistencia', $requests['id'])->first();
         $reporttrabajador->fill([

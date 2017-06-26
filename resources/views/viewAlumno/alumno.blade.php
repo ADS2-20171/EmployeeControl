@@ -178,7 +178,54 @@ label.quest {
 
     <div id='app'>
 
-            <div class="modal" id="modaleventos" style="overflow-y: auto;">
+     <div class="modal" :class="{ visible: newFormVisible }" style="overflow-y: auto;">
+        <div class="modal-content" style="width: auto;">
+            <span class="close" @click="newFormVisible = false">&times;</span>
+            </br>
+             <h4 class="modal-title" id="myModalLabel">Asistencias del Alumno</h4>
+                    </br>
+                    <div class="modal-body">
+                        <article class="block">
+                          <h3 class="block-title">Asistencia</h3>
+                          <section class="row">
+                            
+                            <div class="table-responsive">
+                              <section class="row" style="padding:8px 15px">
+                                  <table class="table table-striped table-bordered table-hover  dataTable">
+                                      <thead class="thead-inverse">
+                                          <tr>
+                                              <th>Hora de Ingreso</th>
+                                              <th>Hora de Salida</th>
+                                              <th>Observacion por Tardanza</th>
+                                              <th>Tardanza</th>
+                                              <th>Calificativo</th>
+                                          </tr>
+                                      </thead>
+                                      @foreach ($al as $als)
+                                      <tbody>
+                                          <tr>
+                                              <td>{{$als->asistencia_horaentrada}}</td>
+                                              <td>{{$als->asistencia_horasalida}}</td>
+                                              <td>{{$als->asistencia_observaciones}}</td>
+                                              <td>{{$als->asistencia_tardanza}}</td>
+                                              <td>{{$als->asistencia_asistio}}</td>
+                                          </tr>
+                                      </tbody>
+                                      @endforeach
+                                  </table>
+                              </section>
+                            </div>
+                          </section>
+                        </article>
+                    </div>
+                    <div class="modal-footer">
+                    <h3>* NOTA:</h3>
+                    <span>Las Asistencias mostradas son solo para el alumno identificado.</span>
+                  </div>
+        </div>
+    </div>
+
+            <div class="modal" id="modaleventos" style="overflow: auto;">
                 <div class="modal-content" style="width: auto;">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true" onclick="document.getElementById('modaleventos').classList.remove('visible');">&times;</span>
@@ -223,64 +270,12 @@ label.quest {
                   </div>
             </div>
 
-            <div class="modal" id="modalasistencias" style="overflow-y: auto; width: auto;">
-                <div class="modal-content" style="width: auto;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" onclick="document.getElementById('modalasistencias').classList.remove('visible');">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">Asistencias del Alumno</h4>
-                    </br>
-                    <div class="modal-body">
-                        <article class="block">
-                          <h3 class="block-title">Asistencia</h3>
-                          <section class="row">
-                            
-                            <div class="col">
-                              <section class="row" style="padding:8px 15px">
-                                  <table class="table table-striped table-bordered table-hover  dataTable">
-                                      <thead class="thead-inverse">
-                                          <tr>
-                                              <th>Hora de Ingreso</th>
-                                              <th>Hora de Salida</th>
-                                              <th>Observacion por Tardanza</th>
-                                              <th>Tardanza</th>
-                                              <th>Calificativo</th>
-                                          </tr>
-                                      </thead>
-                                      @foreach ($al as $als)
-                                      <tbody>
-                                          <tr>
-                                              <td>{{$als->asistencia_horaentrada}}</td>
-                                              <td>{{$als->asistencia_horasalida}}</td>
-                                              <td>{{$als->asistencia_observaciones}}</td>
-                                              <td>{{$als->asistencia_tardanza}}</td>
-                                              <td>{{$als->asistencia_asistio}}</td>
-                                          </tr>
-                                      </tbody>
-                                      @endforeach
-                                  </table>
-                              </section>
-                            </div>
-                          </section>
-                        </article>
-                    </div>
-                    <div class="modal-footer">
-                    <h3>* NOTA:</h3>
-                    <span>Las Asistencias mostradas son solo para el alumno identificado.</span>
-                  </div>
-                  </div>
-            </div>
-
-
-
-
-
-        <section class="container">
+       <section class="container">
 
                 <section class="left">
                      <a  href="{!!route('pdfViewAlumno.index')!!}" class="btn btn-danger" >Exportar Pdf</a>
                      <button type="button" class="btn btn-success " id="eventos">Eventos</button>
-                     <button type="button" class="btn btn-warning " id="asistencias">Asistencias</button>
+                     <button type="button" class="btn btn-warning "  @click="MostrarModalNuevo">Asistencias</button>
 
                   <h2 class="title">Datos del Estudiante</h2>
                   <!-- bloque datos generales -->
@@ -407,8 +402,17 @@ label.quest {
                 return {
                     viewalumnos:[],
                     viewalumno:{},
+                    newFormVisible: false,
                  }
               },
+        methods:{
+
+            
+            MostrarModalNuevo:function(){
+                //$('#modalregistro').modal('show');
+                this.newFormVisible = true;
+            }
+        },
 
         mounted:function(){
             axios.get('/AcademicSystem/public/api/viewAlumno').then(function(data){

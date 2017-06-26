@@ -22,8 +22,17 @@ class UsuarioController extends Controller
     public function getUsuarios()
     {	
 
-        return User::all();
+        return \DB::table('users')->join('rol','users.idrol','=','rol.idrol')->join('alumno','users.idAlumno','=','alumno.idAlumno')->join('trabajador','users.idTrabajador','=','trabajador.idTrabajador')->select('alumno.*','trabajador.*','rol.nombre')->get();
     	
+    }
+
+    public function Pagination(Request $request){
+       $limit = (int) $request->input('limit');
+        $page = (int) $request->input('page');
+        $offset = ($limit * $page) - $limit;
+        return User::take($limit)->skip($offset)->get();      
+
+        
     }
 
     public function postUsuarios(Request $requests)

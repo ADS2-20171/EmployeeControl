@@ -12,15 +12,23 @@ class TrabajadorController extends Controller
 {
     public function index()
     {
-    	//$trabajadores = Trabajador::all();
-        $ta=Trabajador::paginate();
-    	return view('trabajador.trabajador', compact('ta'));
+    	
+    	return view('trabajador.trabajador');
 
     }
 
     public function getTrabajadores()
     {
     	return Trabajador::all();
+    }
+
+    public function Pagination(Request $request){
+       $limit = (int) $request->input('limit');
+        $page = (int) $request->input('page');
+        $offset = ($limit * $page) - $limit;
+        return Trabajador::take($limit)->skip($offset)->get();      
+
+        
     }
 
     public function postTrabajoderes(Request $requests){

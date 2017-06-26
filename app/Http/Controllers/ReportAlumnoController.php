@@ -17,6 +17,14 @@ class ReportAlumnoController extends Controller
     	return \DB::table('alumno')->join('asistencia', 'alumno.idAlumno', '=', 'asistencia.idAlumno')->select('alumno.*','asistencia.*')->get();
     }
 
+    public function Pagination(Request $request){
+       $limit = (int) $request->input('limit');
+        $page = (int) $request->input('page');
+        $offset = ($limit * $page) - $limit;
+        return \DB::table('alumno')->join('asistencia', 'alumno.idAlumno', '=', 'asistencia.idAlumno')->select('alumno.*','asistencia.*')->take($limit)->skip($offset)->get();
+        
+    }
+
 
     public function UpdateReportAlumno(Request $requests){
     	$reportalumno=Asistencia::where('idAsistencia', $requests['id'])->first();

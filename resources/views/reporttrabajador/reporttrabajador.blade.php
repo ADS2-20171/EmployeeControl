@@ -62,7 +62,7 @@
 
         <div>
         <section style="padding: 20px">
-             <label>Buscar Trabajador : <input type="text" name="" id="searchTerm"></label>
+             
         </section>
         </div>
     
@@ -75,7 +75,7 @@
                     <th>Condicion</th>
                     <th>Tipo Horario</th>
                     <th>Hora Entrada</th>
-                    <td>Hora Salida</td>
+                    <th>Hora Salida</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -88,8 +88,17 @@
                     <td>${rt.asistencia_horaentrada}</td>
                     <td>${rt.asistencia_horasalida}</td>
                     <td>
-                   <button name="Editar" class="btn btn-primary" @click="showEditar(rt)">Editar</button>
-                   <button name="eliminar" class="btn btn-yellow" @click="EliminarAlumno(rt.idAsistencia)">Elimminar</button>
+                   <button name="Editar" class="btn btn-primary" @click="showEditar(rt)"><i class="fa fa-eye" aria-hidden="true"></i> Editar</button>
+                   <button name="eliminar" class="btn btn-yellow" @click="EliminarAlumno(rt.idAsistencia)"><i class="fa fa-trash-o" aria-hidden="true"></i> Elimminar</button>
+                    </td>
+                </tr>
+                <tr v-if="reporttrabajadores.length===0">
+                    <td colspan="20" style="text-align: center;"><img src="{{asset('img/cargar.gif')}}"></td>
+                </tr>
+                <tr>
+                    <td>
+                    <button @click="previus()" class="btn btn-primary"><i class="fa fa-backward" aria-hidden="true"></i></button>
+                    <button @click="next()" class="btn btn-primary"><i class="fa fa-forward" aria-hidden="true"></i></button>
                     </td>
                 </tr>
             </tbody>
@@ -107,6 +116,8 @@
                     reporttrabajador:{},
                     editFormVisible: false,
                     newFormVisible: false,
+                    contador: 1,
+                    limit: 4,
                  }
               },
 
@@ -126,6 +137,24 @@
                     celular: reporttrabajador.trabajador_celular,
                     observacion: reporttrabajador.asistencia_observaciones, 
                 };
+            },
+
+            Pagination:function(contador){
+                console.log(this.contador, this.limit);
+                axios.get('/AcademicSystem/public/api/reporttrabajador/pagination?page='+ this.contador + '&limit=' + this.limit).then(function(response){
+                    this.reporttrabajadores=response.data;
+                    console.log(this.reporttrabajadores);
+                 }.bind(this))
+            },
+
+            previus:function(){
+                this.contador --;
+                this.Pagination();
+            },
+
+            next:function(){
+                this.contador ++;
+                this.Pagination();
             },
 
             EliminarReporteTrabajador:function(id){
@@ -167,16 +196,20 @@
                         }
                     });
                     this.reporttrabajadores = copy;
+                    editFormVisible: false;
                 }.bind(this))
             }
 
          },
 
         mounted:function(){
-            axios.get('/AcademicSystem/public/api/reporttrabajador').then(function(data){
+            /*axios.get('/AcademicSystem/public/api/reporttrabajador').then(function(data){
                     this.reporttrabajadores=data.data;
                     console.log(data);
-            }.bind(this))
+            }.bind(this))*/
+            setTimeout(function(){
+                this.Pagination();
+            }.bind(this),2000);
         }
 
        }).$mount('#app')

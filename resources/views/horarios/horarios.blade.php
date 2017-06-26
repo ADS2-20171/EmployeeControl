@@ -16,7 +16,7 @@
                         <div class="row">
                             <section class="col-sm-6">
                                 <label>Descripcion :</label>
-                                <input type="text" name="horario_descripcion" v-model="hora.descripcion" class="form-control">
+                                <input type="text" name="horario_descripcion" v-model="hora.descripcion" class="form-control" required>
                             </section>
                             <section class="col-sm-6">
                                 <label>Horario de Inicio :</label>
@@ -62,15 +62,24 @@
                 <tr v-for="h in horarios">
                     <td>${h.horario_descripcion}</td>
                     <td>${getDifference(h.horario_inicio, h.horario_fin)}</td>
-                    <td></td>
+                    <td>${h.horario_estado}</td>
                     <td>
-                   <button name="Editar" class="btn btn-primary" @click="showEditar(h)">Editar</button>
-                   <button name="eliminar" class="btn btn-yellow" @click="EliminarHorario(h.idHorario)">Elimminar</button>
+                   <button name="Editar" class="btn btn-primary" @click="showEditar(h)"><i class="fa fa-eye" aria-hidden="true"></i> Editar</button></p>
+                   <button name="eliminar" class="btn btn-yellow" @click="EliminarHorario(h.idHorario)"><i class="fa fa-trash-o" aria-hidden="true"></i> Elimminar</button>
+                    </td>
+                </tr>
+                <tr v-if="horarios.length===0">
+                    <td colspan="20" style="text-align: center;"><img src="{{asset('img/cargar.gif')}}"></td>
+                </tr>
+                <tr>
+                    <td>
+                    <button @click="previus()" class="btn btn-primary"><i class="fa fa-backward" aria-hidden="true"></i></button>
+                    <button @click="next()" class="btn btn-primary"><i class="fa fa-forward" aria-hidden="true"></i></button>
                     </td>
                 </tr>
             </tbody>
         </table>
-        {!! $ho->render() !!}
+        
     </div>
     </article>
     <article class="col-sm-12 col-md-12 col-lg-7" id="formulario">
@@ -85,7 +94,7 @@
                         <div class="row">
                             <section class="col-sm-6">
                                 <label>Descripcion :</label>
-                                <input type="text" name="horario_descripcion" v-model="horario.descripcion" class="form-control">
+                                <input type="text" name="horario_descripcion" v-model="horario.descripcion" class="form-control" required="Ingrese Descripcion">
                             </section>
                             <section class="col-sm-6">
                                 <label>Horario de Inicio :</label>
@@ -122,6 +131,8 @@
                     hora:{},
                     editFormVisible: false,
                     newFormVisible: false,
+                    contador: 1,
+                    limit: 3,
                  }
               },
 
@@ -138,6 +149,24 @@
                     inicio: hora.horario_inicio,
                     fin: hora.horario_fin,
                 };
+            },
+
+            Pagination:function(contador){
+                 console.log(this.contador, this.limit);
+                axios.get('/AcademicSystem/public/api/horario/pagination?page='+ this.contador + '&limit=' + this.limit).then(function(response){
+                    this.horarios=response.data;
+                    console.log(this.horarios);
+                 }.bind(this))
+            },
+
+            previus:function(){
+                this.contador --;
+                this.Pagination();
+            },
+
+            next:function(){
+                this.contador ++;
+                this.Pagination();
             },
 
            getDifference:function(_start, _end) {
@@ -218,10 +247,11 @@
          },
 
         mounted:function(){
-            axios.get('/AcademicSystem/public/api/horario').then(function(data){
+            /*axios.get('/AcademicSystem/public/api/horario').then(function(data){
                     this.horarios=data.data;
                     console.log(data);
-            }.bind(this))
+            }.bind(this))*/
+            this.Pagination();
         }
 
        }).$mount('#app')
