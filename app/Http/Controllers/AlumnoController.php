@@ -11,8 +11,7 @@ use App\Http\Requests;
 class AlumnoController extends Controller
 {
     public function index(){
-    	$al=Alumno::paginate();
-    	return view('alumnos.alumno', compact('al'));
+    	return view('alumnos.alumno');
     }
 
 
@@ -95,6 +94,10 @@ class AlumnoController extends Controller
              return response()->json([
                     "mensaje"=>"Eliminado"
                     ]);
+
+    }
+
+    public function paginate($limit, $page){
 
     }
 }

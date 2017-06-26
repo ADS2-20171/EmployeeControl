@@ -230,9 +230,25 @@
 
 
    <script type="text/javascript">
-    $(window).load(function(){
-        $('#mostrarmodal').addClass('visible');
-    });
+   
+        $(document).ready(function(){
+            $("#eventos").click(function(){
+                $("#modaleventos").addClass('visible');
+            });
+        });
+
+        $(document).ready(function(){
+            $("#asistencias").click(function(){
+                $("#modalasistencias").addClass('visible');
+            });
+        });
+
+         $(document).ready(function(){
+            $("#asistenciastrabajador").click(function(){
+                $("#modalasistenciastrabajador").addClass('visible');
+            });
+        });
+
     </script>
 
 

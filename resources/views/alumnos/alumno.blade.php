@@ -5,8 +5,8 @@
 @section('content')
 
     <div id='app'>
-    <div class="modal" :class="{ visible: newFormVisible }">
-        <div class="modal-content" style="width: 600px;">
+    <div class="modal" :class="{ visible: newFormVisible }" style="overflow-y: auto;">
+        <div class="modal-content" style="width: auto;">
             <span class="close" @click="newFormVisible = false">&times;</span>
             </br>
             <form id="trabajor" @submit.prevent="RegistrarAlumnos" enctype="multipart/form-data" files="true">
@@ -115,8 +115,8 @@
         </div>
     </div>
 
-    <div class="modal" :class="{ visible: editFormVisible }">
-        <div class="modal-content" style="width: 600px;">
+    <div class="modal" :class="{ visible: editFormVisible }" style="overflow-y: auto;">
+        <div class="modal-content" style="width: auto;">
             <span class="close" @click="editFormVisible = false">&times;</span>
             <h4 class="modal-title" id="myModalLabel">Actualizar Alumno</h4>
             </br>
@@ -203,12 +203,14 @@
         <div>
         <section style="padding: 20px">
             <button class="btn btn-primary" @click="MostrarModalNuevo">Agregar</button>
-            <label>Buscar Alumno : <input type="text" name="" id="searchTerm"></label>
+            <form id="search">
+                Buscar <input name="query" >
+            </form>
         </section>
         </div>
     
     <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover  dataTable">
+        <table class="table table-striped table-bordered table-hover  dataTable" >
             <thead class="thead-inverse">
                 <tr>
                     <th>Nombres y Apellidos</th>
@@ -220,7 +222,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="a in alumnos">
+           <!--  -->     <tr v-for="a in alumnos" >
                     <td>${a.alumno_nombres}, ${a.alumno_apellidos}</td>
                     <td>${a.alumno_genero}</td>
                     <td>${a.alumno_direccion}</td>
@@ -231,9 +233,27 @@
                    <button name="eliminar" class="btn btn-yellow" @click="EliminarAlumno(a.idAlumno)">Elimminar</button>
                     </td>
                 </tr>
+              <!--   <tr class="pagination">
+                    <td>
+                        <a href="" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </td>
+                    <td><a href="">1</a></td>
+                    <td><a href="">2</a></td>
+                    <td><a href="">3</a></td>
+                    <td><a href="">4</a></td>
+                    <td><a href="">5</a></td>
+                    <td>
+                        <a href="" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </td>
+                </tr> -->
+           
             </tbody>
         </table>
-        {!! $al->render() !!}
+
     </div>
     </div>
     
@@ -248,15 +268,17 @@
                     apoderado:{},
                     editFormVisible: false,
                     newFormVisible: false,
+
                  }
               },
-
         methods:{
+
+            
             MostrarModalNuevo:function(){
                 //$('#modalregistro').modal('show');
                 this.newFormVisible = true;
             },
-            showEditar: function(alumno, apoderado) {
+            showEditar: function(alumno) {
                 this.editFormVisible = true;
                 this.alumno = {
                     id: alumno.idAlumno,
@@ -273,6 +295,13 @@
                     seccion:alumno.alumno_seccion,
                     estado:alumno.alumno_estado,
                 };
+            },
+
+            Pagination:function(){
+                axios.get('/AcademicSystem/public/api/alumno').then(function(response){
+                    this.alumnos=response.data;
+                    console.log(this.alumnos);
+                 }.bind(this))
             },
 
             EliminarAlumno:function(id){
@@ -370,10 +399,7 @@
          },
 
         mounted:function(){
-            axios.get('/AcademicSystem/public/api/alumno').then(function(data){
-                    this.alumnos=data.data;
-                    console.log(data);
-            }.bind(this))
+           this.Pagination();
         }
 
        }).$mount('#app')

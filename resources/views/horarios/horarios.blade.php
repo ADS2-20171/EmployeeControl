@@ -5,8 +5,8 @@
 @section('content')
     
 <div id='app'>
-<div class="modal" :class="{ visible: editFormVisible }">
-        <div class="modal-content" style="width: 600px;">
+<div class="modal" :class="{ visible: editFormVisible }" style="overflow-y: auto;">
+        <div class="modal-content" style="width: auto;">
             <span class="close" @click="editFormVisible = false">&times;</span>
             <h4 class="modal-title" id="myModalLabel">Actualizar de Horario</h4>
             </br>
@@ -139,8 +139,6 @@
                     fin: hora.horario_fin,
                 };
             },
-
-
 
            getDifference:function(_start, _end) {
                   const start = moment.utc(_start, 'HH:mm:ss');

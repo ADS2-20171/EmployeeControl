@@ -5,8 +5,8 @@
 @section('content')
     
     <div id='app'>
-    <div class="modal" :class="{ visible: newFormVisible }">
-        <div class="modal-content" style="width: 600px;">
+    <div class="modal" :class="{ visible: newFormVisible }" style="overflow-y: auto;">
+        <div class="modal-content" style="width: auto;">
             <span class="close" @click="newFormVisible = false" >&times;</span>
             <h4 class="modal-title" id="myModalLabel" >Registro de Trabajadores</h4>
             </br>
@@ -76,8 +76,8 @@
         </div>
     </div>
 
-    <div class="modal" :class="{ visible: editFormVisible }">
-        <div class="modal-content" style="width: 600px;">
+    <div class="modal" :class="{ visible: editFormVisible }" style="overflow-y: auto;">
+        <div class="modal-content" style="width: auto;">
             <span class="close" @click="editFormVisible = false">&times;</span>
             <h4 class="modal-title" id="myModalLabel">Actualizar de Trabajadores</h4>
             </br>

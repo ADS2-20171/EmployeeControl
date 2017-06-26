@@ -179,11 +179,60 @@ label.quest {
 
     
     <div id='app'>
+          <div class="modal" id="modalasistenciastrabajador" style="overflow-y: auto;">
+                <div class="modal-content" style="width: auto;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" onclick="document.getElementById('modalasistenciastrabajador').classList.remove('visible');">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Asistencias del Trabajador</h4>
+                    </br>
+                    <div class="modal-body">
+                     <article class="block">
+                    <h3 class="block-title">Asistencia</h3>
+                    <section class="row">
+                      
+                      <div class="col">
+                        <section class="row" style="padding:8px 15px">
+                            <table class="table table-striped table-bordered table-hover  dataTable">
+                                <thead class="thead-inverse">
+                                    <tr>
+                                        <th>Hora de Ingreso</th>
+                                        <th>Hora de Salida</th>
+                                        <th>Observacion por Tardanza</th>
+                                        <th>Tardanza</th>
+                                        <th>Calificativo</th>
+                                    </tr>
+                                </thead>
+                                @foreach ($ta as $tas)
+                                <tbody>
+                                    <tr>
+                                    
+                                        <td>{{$tas->asistencia_horaentrada}}</td>
+                                        <td>{{$tas->asistencia_horasalida}}</td>
+                                        <td>{{$tas->asistencia_observaciones}}</td>
+                                        <td>{{$tas->asistencia_tardanza}}</td>
+                                        <td>{{$tas->asistencia_asistio}}</td>
+                                    </tr>
+                                </tbody>
+                                @endforeach
+                            </table>
+                        </section>
+                      </div>
+                    </section>
+                  </article>
+                    </div>
+                    <div class="modal-footer">
+                    <h3>* NOTA:</h3>
+                    <span>Los eventos mostrados son solo para el alumno identificado.</span>
+                  </div>
+                  </div>
+            </div>
 
         <section class="container">
 
                 <section class="left">
                     <a  href="{!!route('pdfViewTrabajador.index')!!}" class="btn btn-danger" >Exportar Pdf</a>
+                    <button type="button" class="btn btn-warning " id="asistenciastrabajador">Asistencias</button>
                   <h2 class="title">Datos del Trabajador</h2>
                   <!-- bloque datos generales -->
                   <article class="block">
@@ -247,39 +296,7 @@ label.quest {
                   <!-- bloque datos familiares -->
                  <hr />
                   <!-- Bloque de Asistencias -->
-                  <article class="block">
-                    <h3 class="block-title">Asistencia</h3>
-                    <section class="row">
-                      
-                      <div class="col">
-                        <section class="row" style="padding:8px 15px">
-                            <table class="table table-striped table-bordered table-hover  dataTable">
-                                <thead class="thead-inverse">
-                                    <tr>
-                                        <th>Hora de Ingreso</th>
-                                        <th>Hora de Salida</th>
-                                        <th>Observacion por Tardanza</th>
-                                        <th>Tardanza</th>
-                                        <th>Calificativo</th>
-                                    </tr>
-                                </thead>
-                                @foreach ($ta as $tas)
-                                <tbody>
-                                    <tr>
-                                    
-                                        <td>{{$tas->asistencia_horaentrada}}</td>
-                                        <td>{{$tas->asistencia_horasalida}}</td>
-                                        <td>{{$tas->asistencia_observaciones}}</td>
-                                        <td>{{$tas->asistencia_tardanza}}</td>
-                                        <td>{{$tas->asistencia_asistio}}</td>
-                                    </tr>
-                                </tbody>
-                                @endforeach
-                            </table>
-                        </section>
-                      </div>
-                    </section>
-                  </article>
+                  
                 </section>
                 <section class="right">
                   <figure class="photo">

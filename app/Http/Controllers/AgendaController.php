@@ -56,7 +56,7 @@ class AgendaController extends Controller
 		    	 			'eventos_final'=> Carbon::parse($requests['fin']),
 		    	 			'idTrabajador' => $trabajador->idTrabajador,
     	 					]);
-    	 				 return [ "status" => "error", "message" => "Evento Registrado"];
+    	 				 return [ "status" => "guardado", "message" => "Evento Registrado"];
     	 			
     	 		}
     	}else{
@@ -67,7 +67,7 @@ class AgendaController extends Controller
 	    	 	'eventos_final'=> Carbon::parse($requests['fin']),
 	    	 	'idAlumno' => $alumno->idAlumno,
     			]);
-    		return [ "status" => "error", "message" => "Evento Registrado"];
+    		return [ "status" => "guardado", "message" => "Evento Registrado"];
     	 	
     	 }
     }

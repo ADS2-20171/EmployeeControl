@@ -94,7 +94,7 @@
                     
                         <div class="card-content table-responsive">
                        
-                                    <div id="calendar"></div>
+                                    <div id="calendar" ref="calendar"></div>
                                 
                             
                         </div>        
@@ -115,6 +115,7 @@
               },
 
          methods:{
+
             MostrarModalNuevo:function(){
                 //$('#modalregistro').modal('show');
                 this.newFormVisible = true;
@@ -130,7 +131,8 @@
                             this.close();
                         }
                     });
-                    this.agendas.push(data.data);
+                    
+
                 }.bind(this))
             }
 

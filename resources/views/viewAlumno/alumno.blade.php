@@ -178,35 +178,98 @@ label.quest {
 
     <div id='app'>
 
-            <div class="modal" id="mostrarmodal" style="overflow-y: auto;">
-                <div class="modal-content" style="width: 600px;">
+            <div class="modal" id="modaleventos" style="overflow-y: auto;">
+                <div class="modal-content" style="width: auto;">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" onclick="document.getElementById('mostrarmodal').classList.remove('visible');">&times;</span>
+                        <span aria-hidden="true" onclick="document.getElementById('modaleventos').classList.remove('visible');">&times;</span>
                     </button>
                     <h4 class="modal-title" id="myModalLabel">Eventos del Alumno</h4>
                     </br>
                     <div class="modal-body">
-                      @foreach ($event as $events)
-                                    <label>Titulo</label>
-                                    <h3>{{$events->eventos_titulo}}</h3>
-
-                                    <label>Razón</label>
-                                    <h3>{{$events->eventos_cuerpo}}</h3>
-
-                                    <label>Inicia</label>
-                                    <h3>{{$events->eventos_inicio}}</h3>
-
-                                    <label>Finaliza</label>
-                                    <h3>{{$events->eventos_final}}</h3>
-                              @endforeach
+                        <article class="block">
+                          <section class="row">
+                            
+                            <div class="col">
+                              <section class="row" style="padding:8px 15px">
+                                  <table class="table table-striped table-bordered table-hover  dataTable">
+                                      <thead class="thead-inverse">
+                                          <tr>
+                                              <th>Titulo</th>
+                                              <th>Razón</th>
+                                              <th>Inicia</th>
+                                              <th>Finaliza</th>
+                                          </tr>
+                                      </thead>
+                                      @foreach ($event as $events)
+                                      <tbody>
+                                          <tr>
+                                              <td>{{$events->eventos_titulo}}</td>
+                                              <td>{{$events->eventos_cuerpo}}</td>
+                                              <td>{{$events->eventos_inicio}}</td>
+                                              <td>{{$events->eventos_final}}</td>
+                                          </tr>
+                                      </tbody>
+                                      @endforeach
+                                  </table>
+                              </section>
+                            </div>
+                          </section>
+                        </article>
                     </div>
                     <div class="modal-footer">
                     <h3>* NOTA:</h3>
-                    <span>Los eventos mostrados son solo apra el alumno que se identifico.</span>
+                    <span>Los eventos mostrados son solo para el alumno identificado.</span>
                   </div>
                   </div>
             </div>
 
+            <div class="modal" id="modalasistencias" style="overflow-y: auto; width: auto;">
+                <div class="modal-content" style="width: auto;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" onclick="document.getElementById('modalasistencias').classList.remove('visible');">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Asistencias del Alumno</h4>
+                    </br>
+                    <div class="modal-body">
+                        <article class="block">
+                          <h3 class="block-title">Asistencia</h3>
+                          <section class="row">
+                            
+                            <div class="col">
+                              <section class="row" style="padding:8px 15px">
+                                  <table class="table table-striped table-bordered table-hover  dataTable">
+                                      <thead class="thead-inverse">
+                                          <tr>
+                                              <th>Hora de Ingreso</th>
+                                              <th>Hora de Salida</th>
+                                              <th>Observacion por Tardanza</th>
+                                              <th>Tardanza</th>
+                                              <th>Calificativo</th>
+                                          </tr>
+                                      </thead>
+                                      @foreach ($al as $als)
+                                      <tbody>
+                                          <tr>
+                                              <td>{{$als->asistencia_horaentrada}}</td>
+                                              <td>{{$als->asistencia_horasalida}}</td>
+                                              <td>{{$als->asistencia_observaciones}}</td>
+                                              <td>{{$als->asistencia_tardanza}}</td>
+                                              <td>{{$als->asistencia_asistio}}</td>
+                                          </tr>
+                                      </tbody>
+                                      @endforeach
+                                  </table>
+                              </section>
+                            </div>
+                          </section>
+                        </article>
+                    </div>
+                    <div class="modal-footer">
+                    <h3>* NOTA:</h3>
+                    <span>Las Asistencias mostradas son solo para el alumno identificado.</span>
+                  </div>
+                  </div>
+            </div>
 
 
 
@@ -216,6 +279,9 @@ label.quest {
 
                 <section class="left">
                      <a  href="{!!route('pdfViewAlumno.index')!!}" class="btn btn-danger" >Exportar Pdf</a>
+                     <button type="button" class="btn btn-success " id="eventos">Eventos</button>
+                     <button type="button" class="btn btn-warning " id="asistencias">Asistencias</button>
+
                   <h2 class="title">Datos del Estudiante</h2>
                   <!-- bloque datos generales -->
                   <article class="block">
@@ -224,7 +290,7 @@ label.quest {
                       <div class="col">
                         <div class="form-group">
                           <label for="full-name">Nombres:</label>
-                          <input type="text" id="full-name" v-model="viewalumnos.alumno_nombres"/>
+                          <input type="text" id="full-name" v-model="viewalumnos.alumno_nombres" disabled />
                         </div>
                       </div>
                     </div>
@@ -232,13 +298,13 @@ label.quest {
                       <div class="col-2-3">
                         <div class="form-group">
                           <label for="birth-date">Apellidos:</label>
-                          <input type="text" id="birth-date" v-model="viewalumnos.alumno_apellidos" />
+                          <input type="text" id="birth-date" v-model="viewalumnos.alumno_apellidos" disabled />
                         </div>
                       </div>
                       <div class="col-3">
                         <div class="form-group">
                           <label for="birth-place">DNI :</label>
-                          <input type="text" id="birth-place" v-model="viewalumnos.alumno_dni" />
+                          <input type="text" id="birth-place" v-model="viewalumnos.alumno_dni" disabled="" />
                         </div>
                       </div>
                     </section>
@@ -246,7 +312,7 @@ label.quest {
                       <div class="col">
                         <div class="form-group">
                           <label for="address">Fecha de  Nacimiento:</label>
-                          <input type="text" id="address" v-model="viewalumnos.alumno_fechaNac" />
+                          <input type="text" id="address" v-model="viewalumnos.alumno_fechaNac"  disabled="" />
                         </div>
                       </div>
                     </section>
@@ -256,13 +322,13 @@ label.quest {
                           <div class="col-2">
                             <div class="form-group">
                               <label for="phone1">Direccion:</label>
-                              <input type="text" id="phone1"  v-model="viewalumnos.alumno_direccion"/>
+                              <input type="text" id="phone1"  v-model="viewalumnos.alumno_direccion" disabled="" />
                             </div>
                           </div>
                           <div class="col-2">
                             <div class="form-group">
                               <label for="owner1">Fecha de Matricula:</label>
-                              <input type="text" id="owner1" v-model="viewalumnos.alumno_FechaMatric" />
+                              <input type="text" id="owner1" v-model="viewalumnos.alumno_FechaMatric" disabled="" />
                             </div>
                           </div>
                         </section>
@@ -285,13 +351,13 @@ label.quest {
                           <div class="col-2-3">
                             <div class="form-group">
                               <label for="fam1-name">Nombre:</label>
-                              <input type="text" id="fam1-name" v-model="viewalumnos.apoderado_nombres"/>
+                              <input type="text" id="fam1-name" v-model="viewalumnos.apoderado_nombres" disabled="" />
                             </div>
                           </div>
                           <div class="col-3">
                             <div class="form-group">
                               <label for="fam1-age">Apellidos:</label>
-                              <input type="text" id="fam1-age" v-model="viewalumnos.apoderado_apellidos" />
+                              <input type="text" id="fam1-age" v-model="viewalumnos.apoderado_apellidos" disabled="" />
                             </div>
                           </div>
                         </section>
@@ -299,19 +365,19 @@ label.quest {
                           <div class="col-2">
                             <div class="form-group">
                               <label for="fam1-degree">Direccion:</label>
-                              <input type="text" id="fam1-degree" v-model="viewalumnos.apoderado_direccion" />
+                              <input type="text" id="fam1-degree" v-model="viewalumnos.apoderado_direccion" disabled="" />
                             </div>
                           </div>
                           <div class="col-2">
                             <div class="form-group">
                               <label for="fam1-job">Telefono:</label>
-                              <input type="text" id="fam1-job" v-model="viewalumnos.apoderado_celular" />
+                              <input type="text" id="fam1-job" v-model="viewalumnos.apoderado_celular" disabled="" />
                             </div>
                           </div>
                           <div class="col-2">
                             <div class="form-group">
                               <label for="fam1-job">DNI:</label>
-                              <input type="text" id="fam1-job" v-model="viewalumnos.apoderado_dni" />
+                              <input type="text" id="fam1-job" v-model="viewalumnos.apoderado_dni" disabled="" />
                             </div>
                           </div>
                         </section>
@@ -321,38 +387,7 @@ label.quest {
                   </article>
                   <hr />
                   <!-- Bloque de Asistencias -->
-                  <article class="block">
-                    <h3 class="block-title">Asistencia</h3>
-                    <section class="row">
-                      
-                      <div class="col">
-                        <section class="row" style="padding:8px 15px">
-                            <table class="table table-striped table-bordered table-hover  dataTable">
-                                <thead class="thead-inverse">
-                                    <tr>
-                                        <th>Hora de Ingreso</th>
-                                        <th>Hora de Salida</th>
-                                        <th>Observacion por Tardanza</th>
-                                        <th>Tardanza</th>
-                                        <th>Calificativo</th>
-                                    </tr>
-                                </thead>
-                                @foreach ($al as $als)
-                                <tbody>
-                                    <tr>
-                                        <td>{{$als->asistencia_horaentrada}}</td>
-                                        <td>{{$als->asistencia_horasalida}}</td>
-                                        <td>{{$als->asistencia_observaciones}}</td>
-                                        <td>{{$als->asistencia_tardanza}}</td>
-                                        <td>{{$als->asistencia_asistio}}</td>
-                                    </tr>
-                                </tbody>
-                                @endforeach
-                            </table>
-                        </section>
-                      </div>
-                    </section>
-                  </article>
+                 
                 </section>
                 <section class="right">
                   <figure class="photo">

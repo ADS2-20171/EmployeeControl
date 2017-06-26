@@ -87,6 +87,8 @@ Route::delete('/api/reporttrabajador/{id}','ReportTrabajadorController@DeleteRep
 Route::resource('asistencia','AsistenciaController@index');
 Route::post('/api/asistencia','AsistenciaController@postAsistencias');
 
+
+
 Route::get('/', function(){
 	return view('auth.login');
 });
